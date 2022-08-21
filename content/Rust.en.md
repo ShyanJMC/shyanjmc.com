@@ -86,7 +86,7 @@ Clippy is the Rust's built-in tool to improve the performance and readability of
 
 Is the Rust's compiler. You can set arguments by default to rustc setting the variable; RUSTFLAGS . My actual arguments to each execution of rustc are;
 ```rust
-export RUSTFLAGS="-C opt-level=2 -C debuginfo=0 -C lto -C target-cpu=native"
+export RUSTFLAGS="-C target-feature=+crt-static -C target-cpu=native -C link-arg=-s"
 ```
 
 - Rustup
@@ -221,7 +221,13 @@ An array is a collection of elements (all with the same type) under the same nam
 
 - Pointer
 
-A pointer is it. A pointer to something (RAM information, over variables, etc).
+A pointer is it. A pointer to something (RAM information, over variables, etc). In Rust they are referred with "&", they don’t have any special capabilities other than referring to data, and have no overhead.
+
+- Smart pointer
+
+Unlike normal pointers, smart pointers expand they capabilities as data structures. Another difference is; "smart pointers" take the ownership of pointed data, normal pointers not.
+
+"String"s and "Vec"s types are smart pointers.
 
 - Crate 
 
@@ -244,19 +250,48 @@ So a create can group many modules as developers want, and each module have rela
 
 "Iterating" is the action of process and work with each element in a series, and an iterator is just the way to do it.
 
--
+In Rust the iterators are compiled in a much low level than others codes.
+
+- Concurrent execution
+Is when different parts of a program execute independently.
+
+- Parallel execution
+Is when different parts of a program execute at the same time. The main difference within concurrent execution is that the different parts despite execute at the same time, they depends of each other in some way.
+
+- Thread
+Is a piece of code that runs in concurrent or parallel execution. 
 
 ## Cargo project's structure
 
 When you create a new project with cargo (the recomended way to use rust projects) with "cargo new [project_name]" there are some things you need to know about;
 
 - You can integrate git with cargo adding argument; -\-vcs=git
-- The "Cargo.toml" file is the project's configuration file which constains the project's name, version, edition and the same information for all dependencies.
+- The "Cargo.toml" file is the project's configuration file which constains the project's name, version, edition and the same information for all dependencies. 
+     - Cargo.toml's sections:
+
+"[profile.XXXXXX]":
+
+Here you customize "dev" and "release" specifying compilation flags under "[profile.XXXXX]" sections.
+
+"[package]":
+
+Here you can use keys like; "name" (for package's name), "license" (for specify package's license. Take under consideration that if you publish your libs in crates.io must be open source), "version", "description", "version", etc.
+
+"[dependencies]":
+
+Here you can specify which external crates you will use inside your code.
+
+And others sections.
+
 - In src/ directory (or folder, is the same thing with differents name) you must put your program's files and your headers / libs (crates). By default there is file; main.rs.
 - If just exist "main.rs", the crate root will be it. If exist "lib.rs" the crate root file will be it.
 - In target/ directory you will find the executable program based in two things;
      - The target (CPU architecture and operative system); is not the same compile for AArch64 using x86 than compile for BSD using Linux, each compilation will have the respective folder. My reccomendation is always compile for your specific CPU if you will not distirbute the binary file.
      - If is a release or debug; just for internal use is reccomended use debug release, for release to public must be used "release" because with it will apply optimizations and the final executable will be smaller.
+
+For complete understanding see online documentation;
+
+https://doc.rust-lang.org/cargo/
 
 ## Libraries
 
@@ -275,8 +310,6 @@ use std::io;
 ```
 
 At this point you know (with the above example) you have an lib called "std" (abrevation of "standard") and you are importing from it a colection of features from "io".
-
-If you
 
 ## Variables
 As we said before, a variable is a container wich store specific type of information. 
@@ -568,7 +601,7 @@ The "{}" indicate to Rust that there must be the "variable_x" value, to in execu
 "Println!" print the message to stdout.
 
 ### eprintln!
-Works in the same way than "println!" but prints the message to stderr.
+Works in the same way than "println!" but prints the message to stderr. Which is used to print only issues.
 
 ### String
 This library allocated in standard rust returns an string.
@@ -810,11 +843,32 @@ assert_ne!([thing_1],[thing_2],[message_to_show_if_panic], [variables_if_panic_m
 Contains functions returns true if XXX is in the value. 
 
 There are many implementations and crates to try under scope depending the scenario and the target variable;
+
 1. std::slice::contains
+
 2. std:str::contains
+
 3. std::option::Option::contains
 
 Etc.
+
+### .clone()
+Some are not implicitly copied. Clone method implements the properly behaviors to copy values between variables without issues.
+
+For example;
+```rust
+let var1= String::from("Hello World");
+let var2= var1.clone();
+```
+
+#### is_ok()
+This method checks if some type's Results is "Ok(X)". Returns "true" or "false".
+
+For example;
+```rust
+let var1: Result<&str,&str> = Ok("Everything is OK");
+assert_eq!(var1.is_ok(), true );
+```
 
 
 ## Control Flow; if, else, else if, loop, while and for 
@@ -1539,7 +1593,9 @@ With the last point; how do you cast (convert) from "Option<T>" to "T" ? With "m
 As a type, of course you can work with them in the same way with the rest.
 
 ### Match
-Match operator check if variable is "Some(T)" or "None" and the type of "T" to execute the options properly.
+Match operator check if variable is "Some(T)", "None" and the type of "T" to execute the options properly.
+
+One feature of this is that they patterns need to be exhaustive in the sense that all possibilities for the value in the match expression must be accounted for. Because of that you must inclusde "_" to match every scenario.
 
 Is the specific operator to compare "Options<T>".
  
@@ -1551,29 +1607,72 @@ match [variable_x] {
 	None => [Code_or_return],
 	Some[variable_E] => [Code_or_return],
 
-	[Others_comparations] => [Code_or_return],
+	[Others_comparations_called_patterns] => [Code_or_return],
 	...
+
+	// "or"
+	[other_pattern] || [another_pattern] || ... => [Code_or_return],
+
+	// "and"
+
+	[another_pattern] && [another_pattern_with_before] => [Code_or_return],
 
 	_ => [Code_or_return],
 }
 ```
+
 The match's process is; match takes the variable_x's value (or type if is not a variable but also type if is) and start the comparations;
+
 - Is the variable_x's value empty (None) ? If is execute the code or provide the return specified in [Code_or_return].
 - Is the variable_x's type the same as Some[variable_E]? If is execute the code or provide the return specified in [Code_or_return].
 - And then also can do another comparations like; is variable_x's type or value equal to Z? If is execute the code or provide the return specified in [Code_or_return]. 
 - At least with " _ " you are saying "ok, if nothing match with [variable_x] go here" and then execute the code or provide the return specified in [Code_or_return].
 
 ShyanJMC's Notes:
+
 - If you return some value in any of the match's arms, the rest of returns match the same type. You can not return different types, even if are in differents arms.
+
 - In 90% of cases you will can not use an object directly like " Some("string".to_string()) " because directly operation's returns in "Some"'s operations are not allowed. You must use variables.
+
 - If you use match with some enum's variable, you can not compare directly None because both types are not equals. One is [enum_name]::[type] and the other is Option<T>.
+
 - If you are using enums with match, remember; <T> if you specify in match's arms the type as value instead of pure type (i32 for example) the value must equal with variable.
+
 - As with "if" and others you can call functions in match's arms. But remember, the function's arguments called must be the same type than the others match's arms.
+
 - If Rust understand and knows in compiling time the variable's type, will tell you that it will never match with X. Generally as warning notification.
+
 - If in some arms you don't want/can return or execute something, you can simply put "()".
 
+- Match MUST always cover all possibilties because of that you must always include "Some(x)", "None" and "_"
 
-For example;
+- You can match ranges and struct's parts, for example; 
+```rust
+
+    match x {
+        'a'..='j' => println!("early ASCII letter"),
+        'k'..='z' => println!("late ASCII letter"),
+        _ => println!("something else"),
+    }
+
+    match x {
+        1..=5 => println!("one through five"),
+        _ => println!("something else"),
+    }
+
+
+    let p = Point { x: 0, y: 7 };
+
+    match p {
+        Point { x, y: 0 } => println!("On the x axis at {}", x),
+        Point { x: 0, y } => println!("On the y axis at {}", y),
+        Point { x, y } => println!("On neither axis: ({}, {})", x, y),
+    }
+}
+```
+
+
+With all above, for example;
 ```rust
 enum Customtype{
     Newt1(i32),
@@ -1775,6 +1874,8 @@ fn main(){
     
 }
 ```
+
+The same apply with "while let".
 
 ## Project management - Split features into files, dependencies, packages, libraries and modules
 
@@ -2444,12 +2545,28 @@ if "operation_x" fails and return some "Err(x)" so will be execute "operation_y"
 
 "unwrap_or_else" extract the content from "Ok(XXXX)" and "Err(XXXXX)" to work properly (panic in case of "Err" or store the value from "Ok").
 
-You get the same behaviour with;
+You get the same behaviour with "if let";
 ```rust
-if let Err(e) = [function_with_return_Err(e)] {
-	[code_to_execute]
+// unwrap_or_else way
+
+operation_x.unwrap_or_else( operation_y );
+
+// if let way
+
+if let Err(e) = [operation_x] {
+	[code_to_execute_operation_y]
 }
+
+else if let ........
+
+// in "if let" way; if operation_x returns "Err(e)" will execute the code between { ... } 
+// As you can see you can use "else if let" also.
+// Take and understand this; "if let" and "else if let" is not just for "Err(e)" returns, 
+// is for any return's type.
+
 ```
+
+Take care using "if let", because can shadow the original variable or value.
 
 - unwrap
 
@@ -2906,24 +3023,66 @@ This module have specific functions and macros to use to identify CPU, CPU's arc
 
    - https://doc.rust-lang.org/std/arch/index.html 
 
+For example, to detect CPU architecture;
+```rust
+
+use std::arch;
+
+// Set "target_ach="x86" " or "x86_64" depending of CPU architecture.
+#[cfg(
+    all(
+        any(target_arch = "x86", target_arch = "x86_64"),
+        target_feature = "avx2"
+    )
+)]
+
+// Check the before set and use the respective "use"
+
+fn foo() {
+    #[cfg(target_arch = "x86")]
+    use std::arch::x86::_mm256_add_epi64;
+    #[cfg(target_arch = "x86_64")]
+    use std::arch::x86_64::_mm256_add_epi64;
+
+    unsafe {
+        _mm256_add_epi64(...);
+    }
+}
+```
+
 2. Module; "std::env"
 This module allows you to inspect and manipulate process' environment. Like process' arguments, current directory, process' current directory (where the executable is allocated), the home directory, PATH environment, set and remove environment variables, etc.
 
    - https://doc.rust-lang.org/std/env/index.html
 
-Is recomended use "collect" iterator to store arguments into a Vec<String> variable, then you can access each of them with arrays over that variable.
+For example, to collect program's arguments;
 
-For example, to collect arguments;
 ```rust
 use std::env;
+use std::vec;
 
-fn main() {
+fn main(){
+	// Create a new vector
+	let mut arguments = Vec::new();
+
+	// Recolect arguments, then store the values in vector form.
+    arguments = env::args().collect();
+
+	// Print without format.
+	println!("{:?}", arguments);
+
+
+	// Another way
     let arguments: Vec<String> = env::args().collect();
     println!("{:?}", arguments);
 
+	// Another another way
     let environment_variables = env::var("[ENVIRONMENT_VARIABLE]");
+
 }
 ```
+
+
 Then you can access each element in "arguments" using arrays. After that, the program check if [ENVIRONMENT_VARIABLE] environment variable exist in the system and store the value into "environment_variables" var.
 
 3. Module; "std::fmt"
@@ -2931,10 +3090,79 @@ This module allows you with many utilities to format and print strings in many w
 
    - https://doc.rust-lang.org/std/fmt/index.html 
 
+The most common is "format!(XX)" which returns a String properly formatted;
+
+```rust
+use std::fmt;
+
+fn main(){
+    // Example String..
+    let var1 = format!("Example String..");
+
+    // (3, 4)
+    let var2 = format!("{:?}", (3, 4));
+
+
+    // Hello Rustaceans
+    let people = "Rustaceans";
+    let var3 = format!("Hello {people}!");
+
+    //  Test
+    let var4 = format!("{argument}", argument = "test");
+
+    // 2 1
+    let var5 = format!("{name} {}", 1, name = 2);
+
+    // a 3 b
+    let var6 = format!("{a} {c} {b}", a="a", b='b', c=3);
+
+    // 4
+    let argument = 2 + 2;
+    let var7 = format!("{argument}");
+
+
+    println!("println!: {} \n {} \n {} \n {} \n {} \n {} \n {}",var1,var2,var3,var4,var5,var6,var7);
+    
+    println!("{}",format!("format!: {var1} \n {var2} \n {var3} \n {var4} \n {var5} \n {var6} \n {var7}"));
+}
+
+
+```
+
+One feature of format as you can see above, can use a different format to specify variables.
+
 4. Module; "std::vec"
 This module allows you to use and works with vectors.
    
     - https://doc.rust-lang.org/std/vec/index.html
+
+For example;
+```rust
+use std::vec;
+
+fn main(){
+	// Vectors of any type
+	let mut var1 = Vec::new();
+
+	// Vectors of i32
+	let mut var2: Vec<i32> = Vec::new();
+
+	// Vec macro
+	let mut var3 = vec!["a","b","c","d"];
+
+	// Adding value
+	var1.push("Hello World..");
+	var2.push(5);
+	
+	// Dropping last value
+	var1.pop();
+
+	// Modifing specific values by index (remember, the index start from zero)
+	var3[1] = "B";
+
+	println!("var1; {:?} \n var2; {:?} \n var3; {:?} \n",var1,var2,var3);
+}
+```
 
 5. Module; "std::fs"
 This module allows you to do basic operations in the local filesystem (like; copy file, is there a directory?, create dir/s, hard links, file metadata, read file/directory, delete directory, rename file or directory, set permissions, write file, etc).
@@ -2967,10 +3195,53 @@ This module allows you to do input and output operations.
 
     - https://doc.rust-lang.org/std/io/index.html
 
+For example, to take user's input and store it;
+```rust
+use std::io;
+
+fn main(){
+    let mut var1 = String::new();
+    io::stdin().read_line(&mut var1);
+    
+    println!("Users input; {}", var1);
+}
+```
+
 8. Module; "std::net"
 This module allows you to do primitives operations for TCP and UDP communications as well as IP and sockets addresses (like; listen in TCP, open UDP sockets, configure IPv4, IPv6 or borth, etc).
 
     - https://doc.rust-lang.org/std/net/index.html
+
+For example, to listen in a socket;
+```rust
+/ For sockets
+use std::net::{TcpListener, TcpStream};
+
+// For response
+use std::io::Write;
+
+fn main(){
+    // Create socket for port; 8090
+    let listener = TcpListener::bind("127.0.0.1:8090").expect("Failed to open socket");
+    
+    // Pass each incoming data 
+    for data in listener.incoming(){
+        // We must use "match" because "incoming"'s returns is Option and with "Ok" and "Err" you
+        // can extract data.
+        match data {
+            Ok(data) => tcpresp(data),
+            Err(_) => eprintln!("Incoming operation error."),
+        }
+    }
+}
+
+fn tcpresp(mut data: TcpStream){
+    // Only accept u8 type, not String
+    // The "write" method will write u8 type in the socket, and it will send that message to client
+    data.write( (format!("Recived, this is the response in string.")).as_bytes() );
+}
+
+```
 
 9. Module; "std::string"
 As we work before in this webpage, this module allows you to work with strings.
@@ -2997,10 +3268,31 @@ This module allows you to work with processes (like; spawning child processes fr
 
     - https://doc.rust-lang.org/std/process/index.html
 
-One thing that I recommend to do with thos module is avoid "panic!" when is not a requeriment and use "unwrap_or_else( |err| { [code] });" to handle error with nice and pretty message and then exit the process with;
+One thing that I recommend to do with this module is avoid "panic!" when is not a requirement and use "unwrap_or_else( |err| { [code] });" to handle error with nice and pretty message and then exit the process with;
 
 ```rust
-process::exit(1)
+// Process lib
+use std::process::{self,*};
+
+fn main(){
+    // First the command to execute (is a very good practice not trust in PATH environment
+    // variable), then her arguments.
+    // "Output" method will capture stderr and stdout from the command.
+    let command = Command::new("/usr/bin/echo").arg("Hello World").output().expect("Error to execute program.");
+
+    // To print the stdout
+    // By default print all in i8 format
+    println!("{:?}",command.stdout);
+    // To print the command's status
+    println!("{:?}",command.status);
+
+    // Finish the program with zero as return. 
+    // 0 = everything was fine.
+    // 1 = program failed
+    // +1 = another type of fatal issues
+    std::process::exit(8);
+}
+
 ```
 
 In that case "1" will be the OS stored value (in Linux you can see it with bash command; "$?").
@@ -3014,8 +3306,48 @@ This module allows you to work with iterations over collections.
 
 Special mention to "collect" method (https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect) which create a vector from the iteration and "iter" (https://doc.rust-lang.org/std/iter/trait.Iterator.html#tymethod.next) method which iterate over a collection and return each element every time is called (you can go manually to the next element with "next()" method).
 
+Take under consideration that ".next", ".sum" and others methods from "std::iter" module take the ownership.
+
+Also there are an excelent method; ".map" (https://doc.rust-lang.org/std/iter/struct.Map.html). It use closures to take a parameter from an interation and then use it for operate, then return in raw, so you must use another method like ".collect()" to transform it into another iteration.
+
+```rust
+// Std lib for iterators
+use std::iter;
+
+// Std lib for vectors
+use std::vec;
+
+fn main(){
+    let var1 = vec!["index_zero","index_one","index_two","index_three"];
+
+    println!("var1, first iterator");
+    // Iterator
+    // Passed by reference to not borrow ownership
+    for inter1 in &var1 {
+        println!("{}", inter1);
+    }
+
+    println!("var1, second iterator");
+    // Iterator 2
+    // Map method takes closure input and operate.
+    // Iter method pass each value to next method (map in this case).
+    // Collect method will properly collect map output.
+    let var2: Vec<_> = var1.iter().map( |x| println!("{}",x) ).collect();
+
+
+	// filter: Takes the iterator and evaluate if closure is true or false.
+    // If is true, pass the closure's argument to next method, otherwise
+    // if is false not pass it to next method.
+    // In this case, evaluate if the iteration's closure is "index_one", if is pass
+    // it to "collect" method.
+    let var3: Vec<_> = var1.iter().filter(|y| y.to_string() == "index_one".to_string() ).collect();
+    println!("{:?}",var3);
+
+}
+```
+
 13. Module; "std::result"
-This module allows you to with Results types; check if the returns is Err (returns True if is), etc.
+This module allows you to with Results types; check if the returns is Err (returns True if is) or another return encapsulated inside Ok(XXXXXX) .
 
     - https://doc.rust-lang.org/std/result/index.html
 
@@ -3053,6 +3385,8 @@ let [variable] = | [argument_1],[argument_n] | -> [return_type] {
 
 Take in consideration this; the [variable] is to store the code inside delimited memory under the scope of specific context (the function where is located inside) is not where the return will be stored, take in consideration it. Also you can not print directly a closure in "println!" or similiar, because even with "Debug" the 'closure' trait is not implemented.
 
+If you not specify the argument's type is like "anything".
+
 The first code can be refactored in;
 ```rust
 fn main() {
@@ -3081,18 +3415,728 @@ fn main() {
 
 With above code the code of "work_from_home" function (in the first code) is stored now in "buffer2_result" and that code can be only executed from the rest of code inside "main" (because is the function where lives). The closure's signature specify that the argument is String type and return is u64 type. At least, we call it, storing the result in "_return" variable and printing properly.
 
-Instead like in functions, in closures is not necessary specifie the returns/arguments type but I highly recommend use them because if Rust can not infer the type, will take them as "Strings".
+As closures are containers of code inside a variable, they;
 
-As a closure is use a variable as container for instructions, this can be applied also in structs, but now we must use Traits and generics to indicate Rust that every struct's instance can use them:
+1. Can access to RAM memory of her environment if the closure is not inside "{ }", so a closure without an encapsulation ( in "{ }" ) can access to function's variables
+If the value is used taking the ownership or if use the borrowing or at least the value, depends how was implemented the functions into struct closure.
+
+2. Can be applied to structs also, remember that in Rust the structs must be initialized inside a variable. They must work with Traits and generics.
+
+3. Will infer all closure's arguments like Strings if argument's type is not specified or if Rust compiler can not infer the type. Take it under consideration, because as in functions you **must** indicate the argument's type, you have not issues but is not mandatory in closures. I highly recommend specifie all types, like functions.
+
+If you do not specify the argument's type (and name) you must use generics. The generics and arguments in a closure is not like in functions, this is because a closure can capture their environment (as the above example) and ownership works. Honestly, use generics when do you not specify the argument's type and name is not mandatory, but is a very good practice.
+
+As in functions, you can pass a value with tree possibilities; by reference, by mutable reference and by value. In closures; by reference is represented with "Fn" (in another words; closures that do not move or mutate captured values ), by mutable reference is represented with "FnMut" (in another words; closures that dont move captured values out of their body), and by value is represented with "FnOnce" (in other words; all closures that can be called at least once, everyone).
+
+By default Rust always will choice the most restricted scope based on how closures use the variables. Because of that in a normal closure you do not need specify the ownership, Rust will take care of it using "FnOnce".
+
+
+
+**[NOTE] For now I am having problems to complete understand how structs closures works properly, I dont want tech you things that I'm not sure. For now, I can only teach you the basics of closures.**
+
+
+
+## Smart Pointers
+Smart pointers unlike normal pointers use structs to expand capabilities and uses.
+
+Smart pointers are referred with "Box<T>" and normal pointers with "&" (before the variable's name or data).
+
+Instead store the data into the stack, like a normal pointer, they store the data into the heap.
 
 ```rust
-struct [Name]<Æ>
-where
-	Æ: Fn([TYPE]) -> [TYPE],
-{
-	[variable_closure]: Æ.
-	[variable_x]: [Type],
+fn main() {
+    let b = Box::new(5);
+    println!("b = {}", b);
 }
 ```
 
-With above example, we declarate a struct called [Name] with generic "Æ"
+In Rust-book's words;
+
+> Putting a single value on the heap isn’t very useful, so you won’t use boxes by themselves in this way very often. Having values like a single i32 on the stack, where they’re stored by default, is more appropriate in the majority of situations.
+
+Take this VERY carefully:
+
+**Pointers (smart or not) have ALWAYS the same size because points to a memory location, not hold data. Because of that; that data's size can change over time (because data can change) but the pointer's size will be the same always. This is useful when pointers is used properly but take care of it if your pointers operations depends over pointer's data size. **
+
+Smart pointers implements two traits; "Deref" (which allows "Box<T>" to be treated like references) and "Drop" (which allows to clean memory direction when a pointers - smart or not - becomes invalid).
+
+### The "Deref" trait:
+
+Dereference something is returns the reference's memory's data (for example; Strings types dereference to &str). So, to use a smart pointer as reference, you must derefence first. The "deref()" method provide the capability to derefence any type and get the reference's memory's data. For example, the dereference way is;
+
+```rust
+fn main() {
+    let x = 5;
+    let y = &x;
+
+    assert_eq!(5, x);
+    assert_eq!(5, *y);
+}
+```
+
+And the dereference way with Box<T> is;
+
+```rust
+fn main() {
+    let x = 5;
+    let y = Box::new(x);
+
+    assert_eq!(5, x);
+    assert_eq!(5, *y);
+}
+```
+
+With both example, when we need access to y's data we must the dereference way so Rust can get the x's memory reference.
+
+When you do;
+
+```rust
+*y;
+```
+
+Rust do in background;
+
+```rust
+*( y.deref() );
+```
+
+With above, Rust dereference "y" gettin memory reference. The parentheses are still a requirement because ownership system, they allow to not take the data's ownership. 
+
+To not do security issues; a mutable reference will be transformed into an inmutable reference (so the pointer can not change to where points in memory).
+
+As a dereference operation provide the memory data location, you can change data if is mutable;
+
+```rust
+// Std lib for iterators
+use std::iter;
+
+// Std lib for vectors
+use std::vec;
+
+fn main(){
+
+    let mut var1 = 55;
+    let mut var2 = Box::new(var1);
+
+    println!("Smart Point var2: {}",var2);
+    *var2 = 100;
+    println!("Smart Point var2: {}",var2);
+}
+```
+
+### The "Drop" trait
+"Drop" trait allows to customize what happens when a value is out of scope. This trait can be implemented in any type and is used to release a resource.
+
+For example, from Rust book;
+```rust
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer with data `{}`!", self.data);
+    }
+}
+
+fn main() {
+    let c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+    let d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    };
+    println!("CustomSmartPointers created.");
+}
+```
+
+The above example create two struct's instances with one String. The "Drop" trait is implemented for that struct ("CustomSmartPointer"), as "Drop" trait is implemented mainly for smart pointers, we can say that "CustomSmartPointer" is a smart pointer.
+
+Maybe you do not know yet but; as "Drop" trait clean memory when a resource is out of scope, is not mandatory call it as "d.drop()" or "c.drop()" because at the end of program will be executed and "println!" line executed. Rust will not let you call "drop" method manually.
+
+Rust do not allow you to call manually ".drop()" method because can cause a "double free" issue when Rust then try to release a released memory.
+
+If you want release the memory manually, you must use the "std::mem::drop" function. The syntax is;
+
+```rust
+drop( [variable] );
+```
+
+That call will bring the resource out of scope and, because of that, that memory will be released.
+
+For example;
+
+```rust
+// Std lib for iterators
+use std::iter;
+
+// Std lib for vectors
+use std::vec;
+
+// Std lib for memory management
+use std::mem::drop;
+
+
+fn main(){
+    let var1 = vec!["index_zero","index_one","index_two","index_three"];
+
+    println!("var1, first iterator");
+    // Iterator
+    // Passed by reference to not borrow ownership
+    for inter1 in &var1 {
+        println!("{}", inter1);
+    }
+
+
+    drop(var1);
+
+    println!("Now var1 is out of scope.");
+
+
+}
+```
+
+### Reference Counted
+From "std::rc::Rc".
+
+The Rc ("Reference counted") is another smart pointer. Think it as the double pointer from C pure, the main difference is with the ownership; in Rust a RC allow data to have multiple owners.
+
+For example, from Rust Book;
+
+![Rust Reference Counted](rust-trpl15-03.png "Rust Reference counter")
+
+The "a","b" and "c" variables have data as primary field and a pointer as second field. 
+
+That is created with this code;
+
+```rust
+enum List {
+    Cons(i32, Rc<List>),
+    Nil,
+}
+
+use crate::List::{Cons, Nil};
+use std::rc::Rc;
+
+fn main() {
+    let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));
+    let b = Cons(3, Rc::clone(&a));
+    let c = Cons(4, Rc::clone(&a));
+}
+```
+
+If you use ".clone()" method, will do a deep clone. With "Rc::clone(XX)" will make a pointer to respective data.
+
+If you want get the number of pointers to specific direction you can use; " Rc::strong_count(&[variable_pointer]) " function. The return is the number of pointers to that memory location. 
+
+Take under consideration that an "Rc<T>" type only is cleaned if its "strong_count" number is zero. This is because "Rc::clone(XX)" create a strong reference, to clean the memory you must create a weak reference; "Weak<T>".
+
+Instead like "Box<T>", the references created are inmutable by default and the only way to make them mutable is with "unsafe" configuration (with it you lose many of the Rust advantages). Even if you dereference you can not change the data destination even if is from mutable variable. The usage with "unsafe" is with; "RefCell<T>" but I highly not recommend use it.
+
+For example;
+
+> We have two entities; one parent and one child. The child entity is owned by the parent entity. The child entity store the data and the parent read it. If we use "Rc<T>" (in the parent) the child entity will never can be dropped from memory because her "strong_count" will be always one (by the parent). If we use "Weak<T>" will create a weak reference because instead "strong_count" will use "weak_count" (which is used to track weak references).
+
+"weak_count" allow to be dropped from memory even if the pointed data is still under scope. Weak references must be used with unsafe rust capabilities, in specific "RefCell<T>" (which also allows to mutate data even in an inmutable reference) from "std::cell::RefCell".
+
+For example here we have two threes; the log is the parent and each branch is the child.
+
+```rust
+// Stdlib for weak links.
+use std::cell::RefCell;
+
+// Stdlib for vectors
+use std::vec;
+
+// Stdlib for String and Weak references respectly.
+use std::rc::{Rc, Weak};
+
+// To show "Tree" structure without formatting requeriments.
+#[derive(Debug)]
+struct Tree {
+    // to store some value
+    value: i64,
+    // to store the information about what is her parent log. 
+    // We use "RefCell" to make a weak link (a mutable reference) pointing 
+    // to a weak reference to a "Tree" (this struct) type.
+    parent: RefCell<Weak<Tree>>,
+    
+    // to store child branch.
+    // Instead weak reference, we use a strong reference because the parent 
+    // can not be dropped unless all childs ended.
+    // We use a Vector because a parent can hold many childs, not just one.
+    child: RefCell<Vec<Rc<Tree>>>,
+}
+
+fn main(){
+    // With "Rc::new" we are making a strong reference to that data in struct form.
+    let branch = Rc::new(Tree{
+        value: 2,
+        
+        parent: RefCell::new(Weak::new()),
+        child: RefCell::new(Vec::new() ),
+    });
+
+    // With "Rc::new" we are making a strong reference to that data in struct form.
+    let mut log = Rc::new(Tree {
+        value: 1,
+        // With this way, will be empty.
+        parent: RefCell::new(Weak::new()),
+        // Creating as empty because for now there are not branchs
+        child: RefCell::new(vec![Rc::clone(&branch)]),
+    }); 
+
+    // Pointing to "log" variable as parent
+    // Is a requeriment "borrow_mut" method.
+    *branch.parent.borrow_mut() = Rc::downgrade(&log);
+
+    // Borrow and upgrade are needed to follow pointer and upgrade reference data
+    // because of that is not needed the dereference.
+    println!("Branch's parent is; {:?}", branch.parent.borrow().upgrade() );
+
+    // Borrow is needed to follow pointer and upgrade reference data
+    // because of that is not needed the dereference.
+    println!("Log's child is; {:?}", log.child.borrow() );
+
+ 
+    println!("Weak counters to branch; {} \nStrong counters to branch; {}", Rc::weak_count(&branch), Rc::strong_count(&branch));
+    println!("Weak counters to log; {} \nStrong counters to log; {}", Rc::strong_count(&log), Rc::strong_count(&log));
+    
+
+}
+
+```
+
+**Note: Upgrade method is not implemented for vectors, because of that I can not use on it**
+
+## Parallel and concurrent programming
+From this std library crate;
+```rust
+use std::thread;
+```
+
+As I said in the "Theory" section;
+
+- Concurrent execution
+Is when different parts of a program execute independently.
+
+- Parallel execution
+Is when different parts of a program execute at the same time. The main difference within concurrent execution is that the different parts despite execute at the same time, they depends of each other in some way.
+
+- Thread
+Is a piece of code that runs in concurrent or parallel execution. 
+
+Take under consideration that there can be many issues;
+
+1. Borrowing values to thread, going out of scope after it ends but at the program end try to dropp it. This obligate us to use "Message Passing".
+
+2. Race conditions, where threads are accessing data or resources in an inconsistent order
+
+3. Deadlocks, where two threads are waiting for each other, preventing both threads from continuing. 
+
+4. Bugs that happen only in certain situations and are hard to reproduce and fix reliably
+
+In Rust threads have this considerations;
+
+1. In Rust threads are closures. They are started with the procedure called; "spawn".
+
+2. When parent function ends, kills child threads. Because of that, there is a method called "join()" which waits thread ends before continue. 
+
+3. Because "join()" method functionality, the position where you call your thread closure can modify the execution process in main.
+
+4. Ownership also works in threads, because of that you can also have issues with arguments. Even if functions called use references to arguments, the thread will do a borrow moving the values. Because of that this Go slogan; **“Do not communicate by sharing memory; instead, share memory by communicating.”** in another words; not communicate threads sharing memory parts like structs or variables use the communicate process; channels.
+
+A channel is like a pipe, with a transmitter and a receiver at least, but in Rust can be many transmitters but only one receiver. If one of both extremes is dropped, the channel will do so. Channels are in the standard sync module;
+```rust
+use std::sync::mpsc;
+```
+
+Channels are tuple; the first part is where transmitters send data and the second part is where receivers take it. Instead use variables and arguments, and have issues with overship, you can read and write to a channel directly (and you will not have issues with the ownership because thread closure do the work).
+
+Take under consideration the ownership rules of Rust; if you send a variable to a channel, a borrow move will be done.
+
+Also, and honestly I don't know why, channels have a particularity; if you send data of X type, the rest of data **MUST** be the same type.
+
+For example, this is a very simple threads;
+
+```rust
+// Stdlib for vectors
+use std::vec;
+
+// Stdlib for time duration
+use std::time::Duration;
+
+// Stdlib for strings
+use std::string;
+
+// Stdlib for threads
+use std::thread;
+
+// Stdlib for channels
+use std::sync::mpsc;
+
+// For "if temporal....." line
+#[derive(PartialEq)]
+// For print without formatting
+#[derive(Debug)]
+// For "to_owned()" method
+#[derive(Clone)]
+struct CommonData {
+    archx86: i64,
+    cpu_vendor: String,
+    cpu_gen: i64,
+    cpu_version: i64,
+}
+
+fn function_thread1(argument: &CommonData){
+    println!("cpu vendor: {}", argument.cpu_vendor.to_owned() );
+    println!("cpu vendor generation: {}", argument.cpu_gen.to_owned() );
+    println!("cpu architecture: {}", argument.archx86.to_owned() );
+}
+
+fn function_thread2(argument: &CommonData){
+    println!("cpu vendor version: {}", argument.cpu_version.to_owned() );
+}
+
+
+fn function_threadX_multiple_senders(){
+    let instance = CommonData {
+        archx86: 386,
+        cpu_vendor: "Intel".to_owned(),
+        cpu_gen: 1,
+        cpu_version: 00001,
+    };
+
+    // Channel: "sc" variable to send the data and "rc" to recieve data
+    let (sc0,rc0) = mpsc::channel();
+
+    // Second sender
+    let sc2 = sc0.clone();
+    
+    // I created the numbers as chars because I want
+    let temp = vec!["a","b","c","d","e","f","g","h","i","j"];
+    let temp2 = vec!["1","2","3","4","5","6","7","8","9"];
+
+    let tthread = thread::spawn(move ||
+                                {
+                                    for i in temp {
+                                        sc0.send(i).unwrap();
+                                    }
+                                }
+                                );
+
+    let tthread2 = thread::spawn(move ||
+                                 {
+                                     for x in temp2 {
+                                         sc2.send(x).unwrap();
+                                     }
+                                 }
+                                 );
+
+
+    tthread.join().unwrap();
+    tthread2.join().unwrap();
+
+    for _x in 1..15 {
+            println!("Messages from threadX; {:?}", rc0.recv().unwrap() );
+            thread::sleep( Duration::from_secs(1) );
+    }
+}
+
+fn main(){
+    let instance1 = CommonData {
+        archx86: 64,
+        cpu_vendor: "Intel".to_owned(),
+        cpu_gen: 12,
+        cpu_version: 12700,
+    };
+
+    // "sc" variable to send the data and "rc" to recieve data
+    let (sc,rc) = mpsc::channel();
+
+    let thread1 = thread::spawn(move || 
+                                {
+                                    function_thread1(&instance1);
+                                    // Send single data
+                                    sc.send(instance1).unwrap();
+                                    thread::sleep( Duration::from_secs(5) );
+                                }
+                                );
+
+    let thread2 = thread::spawn(move ||
+                                {
+                                    // The thread will be on hold here until recive the data from
+                                    // "rc".
+                                    let mut instance11 = rc.recv().unwrap();
+                                    let mut temporal1 = instance11.to_owned();
+                                    function_thread2(&instance11);
+
+                                    for _x in 1..15 {
+                                        if temporal1 == instance11 {
+                                            println!("No new message.");
+                                        }
+                                        else {
+                                            println!("Messages from thread1; {:?}", temporal1);
+                                            instance11 = rc.recv().unwrap();
+                                            thread::sleep( Duration::from_secs(1) );
+                                        }
+                                    }
+                                }
+                                );
+    thread1.join().unwrap();
+    thread2.join().unwrap();
+
+    function_threadX_multiple_senders();
+}
+```
+
+### Locking access to specific resource
+One issue about parallel programming is when two threads try to access (to modify or just read) the same resource and came the main issue; "what agent will have the priority over that resource?"
+
+In C there are; semaphores which determinate what thread have the property. In Rust we have Mutex type with the lock method inside sync lib;
+
+```rust
+use std::sync::Mutex;
+```
+
+But you can not do a lock, take data and work with it, unlock it without have issues with the ownership because you did a move operation of argument into thread.
+
+To share the ownership of same resource between threads without cause a mess you need;
+
+```rust
+use std::sync::Arc;
+```
+
+Arc works in a way like Rc with weak references, but both are different. Arc types allows you to work with many threads using the same resources where some of they can take the priority of it and the others will wait until is released properly.
+
+The main methods/functions are;
+
+1. Mutex::new(T)
+
+This create a type Mutex<T> which allow to pass to others sync methods and works with the resource's ownership properly. Mutex<T> create a mutable reference inside Arc<T> type **even** if the original/target is inmutable. Take it under consideration because is the same as Rc.
+
+2. Arc::new(Mutex<T>)
+
+This create a type Arc<Mutex<T>> which allow to change the ownership of T resource.
+
+3. Arc::clone(& Arc<Mutex<T>>)
+
+This clone the Arc<Mutex<T>> to change then the ownership of T resource. Remember this do not change the ownership, that is do when locking or unlocking, this only allow thread to do it.
+
+4. ".lock()"
+
+This method takes as input an Arc or Mutex (note; use unwrap() to manage properly the issues). Unlock the resource when the lock is out of scope.
+
+```rust
+// Stdlib for vectors
+use std::vec;
+
+// Stdlib for strings
+use std::string;
+
+// Stdlib for threads
+use std::thread;
+
+// Stdlib for shared resources
+use std::sync::{Arc, Mutex};
+
+// For print without formatting
+#[derive(Debug)]
+// For "to_owned()" method directly to struct
+#[derive(Clone)]
+struct CommonData {
+    data1: String,
+    data2: String,
+}
+
+fn main(){
+    // We create an inmutable instance, but remember
+    // Mutex<T> allow to mutate an inmutable variable.
+    let instance1 = CommonData {
+        data1: String::from("Hello World"),
+        data2: String::from("Some other data"),
+    };
+
+    println!("Instance1 structure:\n data1; {} \n data2; {}", instance1.data1, instance1.data2);
+
+    // Shared resource (Mutex<T>) and resource reference (Arc<Mutex<T>>)
+    let instarc = Arc::new(Mutex::new(instance1));
+
+    // Clone of resource reference so threads can work without issues
+    // the clone must be by reference
+    let instarc11 = Arc::clone(&instarc);
+    let instarc21 = Arc::clone(&instarc);
+    let instarc31 = Arc::clone(&instarc);
+
+    // We create the thread without init it
+    let thread1 = thread::spawn(move || {
+        // We take one cloned resource reference, locking it to only
+        // this thread can use it.
+        let mut lockth11 = instarc11.lock().unwrap(); 
+        // The mutable resource reference must not be acceded by dereference.
+        // I know that is not intuitive.
+        // This transform the type String into str
+        lockth11.data1 = "Data1 changed".to_owned();
+        println!(" CommonData structure thread1 data1; {:?}",lockth11.data1);
+
+    // Here, when the thread ends, the lock (as lockth11 variable) will be out of scope
+    // and will be released.
+    } );
+
+    let thread2 = thread::spawn(move || {
+        let mut lockth21 = instarc21.lock().unwrap();
+        lockth21.data2 = "Some other data, but new by thread2.".to_owned();
+        println!(" CommonData structure thread2 data2; {:?}",lockth21.data2);
+    } );
+
+    thread1.join().unwrap();
+    thread2.join().unwrap();
+}
+```
+
+## Object Oriented Programming (OOP)
+The "The Gang of Four" book define OOP like;
+
+> Object-oriented programs are made up of objects. An object packages both data and the procedures that operate on that data. The procedures are typically called methods or operations.
+
+Object Oriented Programming concepts;
+
+1. Methods or operations; 
+
+With it we can say that Rust is object oriented because have methods, traits and implementations to work with struct's and enum's data.
+
+2. Encapsulations;
+
+The encapsulation concept is like this; the only way to interact to an object is using her public API (in mods there are public functions which use private mod's functions) without the possibility to bypass it. With this we can say that Rust is OOP.
+
+3. Inheritance
+
+The inheritance is the concept a father inherit to a child some values under her scope. Rust do not have inheritance. As Rust don't have support for this, provide ways to share code between specific codes and types; Traits, methods and implementations.
+
+An object-oriented design pattern is; state pattern which means that a value has an internal state, represented by state objects (they share functionality, in Rust they are Traits and Structs) and the value's behavior change depending of it. Each state object controls its own behavior (including the change).
+
+So, OOP is more like a way to programming instead specific methods.
+
+
+## Continuous learning
+
+I really really reccomend you that from time to time you visit this Rust book's section to keep in mind patterns in a lot of things;
+
+- https://doc.rust-lang.org/stable/book/ch18-03-pattern-syntax.html
+
+## Unsafe Rust
+
+Let me be direct; do not use unsafe feature unless you really really know what you are doing.
+
+With unsafe feature you can;
+
+- Modify a global mutable static variable (which in normal Rust you can not use static variable because ownership).
+
+```rust
+static [variable]: &str = "Hello, world!";
+
+fn main(){
+	....
+}
+```
+
+- Dereference  null and raw pointers; in this you can point to invalid memory position, use them as null, do not cleanup them automatically, and have a mess about memory destinations.
+
+- Use "union".
+
+- Manage memory; for of this point is because OS programmed directly and completely in Rust (like Redox OS) use "unsafe" in kernel.
+
+- Disable memory and references checks.
+
+- Call unsafe functions, methods and traits (as "split_at_mut" from stdlib).
+
+- Call C code.
+
+The unsafe feature is implemented with;
+```rust
+
+// This part is only if you create a new unsafe function
+
+unsafe [fn/trait] [unsafe_trait_or_functionXX]() {
+	.....
+}
+
+unsafe impl XXX for YYY {
+	.....
+}
+
+unsafe {
+	[unsafe_functionXX]();
+}
+
+```
+
+Raw pointers;
+
+Is like a normal reference, but with unsafe features.
+
+```rust
+    let mut num = 5;
+
+    let r1 = &num as *const i32;
+    let r2 = &mut num as *mut i32;
+```
+
+Doing the syntax;
+```rust
+let [variable] = &[variable_pointed] as [*const/*mut] [type];
+```
+
+the "*" is not for derefence, is part of syntax.
+
+## Placeholders types and associated types
+
+Associated types are like generics, but with one main difference; while generics must be implemented specific in types (because you can implement the generic multiple times as you need), the associated types can be only implemented once. The behavior that an associated type can be implemented only once allow to not need implement.
+
+Also associated types works as default trait if you associate the type to something else trough 
+
+Associated types syntax is;
+
+```rust
+[pub/] trait [TraitName]<[PlaceHolderType]=[ConcretType]> {
+	type [TypeNameX];
+
+	fn [method]( [&mut/] self) -> Self::[TypeNameX];
+}
+```
+
+In this example, from Rust Book, the associated type is implemented as the default behavior and because of that you can do the summatory of structs and the return of that behavior is another struct that "assert_eq" will check with the second argument.
+
+Keep in mind that this example do something new; "overloading". The overloading process is use an advanced trait to overwrite the behavior of something (operator, method, etc). In this example, when we take under scope the "ops::Add" module (which provide the "+" operator using "add" method), and with the advanced trait we overwrite module's "add" method.
+:
+
+```rust
+use std::ops::Add;
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Add for Point {
+    type Output = Point;
+
+    fn add(self, other: Point) -> Point {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+fn main() {
+    assert_eq!(
+        Point { x: 1, y: 0 } + Point { x: 2, y: 3 },
+        Point { x: 3, y: 3 }
+    );
+}
+```
+
+Remember that the difference between a normal Trait and this advanced Trait is the "type Output = Point". The advanced Trait designates that "add" will be the default behavior to type "Output".
+

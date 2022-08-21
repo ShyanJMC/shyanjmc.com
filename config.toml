@@ -2,6 +2,9 @@ baseURL = 'https://shyanjmc.com/'
 title = 'ShyanJMC - Cybersecurity, hacking, Rust and Linux'
 theme = 'hugo-book'
 
+# Disable matadata generator inyect in html
+disableHugoGeneratorInject = true
+
 # Book configuration
 disablePathToLower = true
 
