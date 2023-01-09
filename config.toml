@@ -9,7 +9,7 @@ disableHugoGeneratorInject = true
 disablePathToLower = true
 
 [markup.tableOfContents]
-  startLevel = 1
+  startLevel = 2
 
 # Multi-lingual mode config
 [languages]
