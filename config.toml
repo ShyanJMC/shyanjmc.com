@@ -27,7 +27,7 @@ disablePathToLower = true
 # [[menu.before]]
 [[menu.after]]
   name = "Git Server"
-  url = "https://git.shyanjmc.com"
+  url = "https://git.shyanjmc.com/ShyanJMC"
   weight = 10
 
 [params]
@@ -66,3 +66,6 @@ disablePathToLower = true
   # /!\ This is an experimental feature, might be removed or changed at any time
   # (Optional, experimental, default false) Enables a drop-down menu for translations only if a translation is present.
   BookTranslatedOnly = false
+
+  BookRepo ='https://github.com/ShyanJMC/shyanjmc.com'
+  BookCommitPath = 'commit'
