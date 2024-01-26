@@ -72,6 +72,28 @@ Solamente con "adb" estamos:
    Si tira un error del tipo "Failure [INSTALL_FAILED_NO_MATCHING_ABIS: Failed to extract native libraries, res=-113" quiere decir que la arquitectura que estás 
    usando en el Android (arm64, armehb, x86_64, etc) no es compatible con el de la aplicación.
 
+# Man in the middle (MITM) - Red
+
+Recomiendo usar mitmproxy, ya que permite ver todo mucho más claramente y automatizar todo con python.
+
+1. Primero se instala en el host mitmproxy.
+2. Luego lo iniciamos con los siguientes argumentos;
+    > -k -p8080 --anticomp --anticache
+
+    -k = indica que no verifique la autenticidad del certificado remoto del servidor
+    
+    -p8080 = indica que el servidor mitmproxy debe usar el puerto 8080 para las conexiones entrantes
+    
+    --anticomp = indica que la conexión con el servidor remoto no debe usar archivos comprimidos
+    
+    --anticache = indica que la conexión con el servidor remoto no debe usar caché 
+
+3. Conectamos el dispositivo Android al servidor proxy;
+    1. "Ajustes" -> "Wifi" -> [Conexión] -> "Proxy"
+4. Vamos a [mitm.it](http://mitm.it)
+5. Clickeamos en "Android", bajamos el certificado y luego lo importamos para todas las apps.
+6. Si la aplicación objetivo no tiene "certificate pinning" vamos a empezar a ver su tráfico, si lo tiene veremos en mitmproxy un error de TLS handshake.
+
 # Hacking con Frida
 
 Frida es un framework de escucha y respuesta instrumental para sistemas móbiles de Android y Linux
