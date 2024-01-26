@@ -1,0 +1,23 @@
+[book]
+authors = ["Joaquin <ShyanJMC> Crespo"]
+language = "es"
+multilingual = false
+src = "src"
+title = "Krav Maga"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+curly-quotes = true
+mathjax-support = false
+copy-fonts = true
+no-section-label = false
+git-repository-url = "https://github.com/ShyanJMC"
+git-repository-icon = "fa-github"
+edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path}"
+site-url = "/krav-maga/"
+cname = "shyanjmc.com"
+
+[output.html.print]
+enable = true    # include support for printable output
+page-break = true # insert page-break after each chapter

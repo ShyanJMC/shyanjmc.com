@@ -1,0 +1,6 @@
+# Bibliotecas estándar
+
+
+## GLibc
+
+## MUSL
