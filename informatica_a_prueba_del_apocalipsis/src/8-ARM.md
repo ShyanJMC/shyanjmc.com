@@ -5,7 +5,7 @@ de bajo costo, bajo consumo y minimalismo estructural.
 
 Si desea ver un video documental (inglés o español) sobre sus inicios, puede ver;
 
-- LowSpecGamer en Español; " Los Amateurs que crearon el Procesador mas popular del mundo "
+- LowSpecGamer en Español; "Los Amateurs que crearon el Procesador mas popular del mundo"
 
    https://www.youtube.com/watch?v=xK32lQpzQnc
 
