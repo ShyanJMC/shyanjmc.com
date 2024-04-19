@@ -5,8 +5,6 @@
 - [Creación de antenas](./3-antenas.md)
 - [Generación de energía y Generadores eléctricos](./4-generacion_energia.md)
 - [Arquitectura computacional](./5-arquitectura.md)
-- [Comunicaciones inalámbricas](./6-wireless.md)
-- [Comunicaciones alámbricas](./7-wired.md)
 - [Sistemas ARM](./8-ARM.md)
 - [Codificación electrónica](./9-codificacion.md)
 - [Documentación](./10-docu.md)
