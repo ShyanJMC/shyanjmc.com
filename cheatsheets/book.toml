@@ -1,0 +1,22 @@
+[book]
+authors = ["Joaquin <ShyanJMC> Crespo"]
+language = "es"
+multilingual = false
+src = "src"
+title = "CheatSheets"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+#curly-quotes = true
+mathjax-support = false
+copy-fonts = true
+no-section-label = false
+git-repository-url = "https://github.com/ShyanJMC"
+git-repository-icon = "fa-github"
+site-url = "/cheatsheets/"
+cname = "shyanjmc.com"
+
+[output.html.print]
+enable = true
+page-break = true

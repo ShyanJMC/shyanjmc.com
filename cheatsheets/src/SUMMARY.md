@@ -1,0 +1,15 @@
+# Summary
+
+- [Ansible](./ansible.md)
+- [AZ-900](./az900.md)
+- [Azure CLI - PowerShell](azclipowershell.md)
+- [Bash](./bash.md)
+- [DataDog](./datadog.md)
+- [Ensamblador ARM](./arm_assembly.md)
+- [JavaScript](./js.md)
+- [Jenkins](./jenkins.md)
+- [Kubernetes](./k8s.md)
+- [Python](./python.md)
+- [Rust](./rust.md)
+- [Seguridad](./seguridad.md)
+- [Terraform](./terraform.md)
