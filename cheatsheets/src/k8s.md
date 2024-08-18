@@ -82,6 +82,95 @@ Kubernetes bare metal
 
 > /etc/kubernetes/admin.conf
 
+## Tags - Roles 
+
+Posibles roles para los nodos;
+
+- worker
+- control-plane
+- etcd
+- master
+
+Asignar un rol
+
+> kubectl label node [node_name] node-role.kubernetes.io/[role]=[tag_any_name]
+
+Borrar un rol
+
+> kubectl label node [node_name] node-role.kubernetes.io/[role]-
+
+## Persistent Volume (PV)
+
+Sirve para que independientemente de la instancia de POD, se pueda usar el volumes
+en cada despliegue, se definen mediante el StorageClass.
+
+Si se maneja bien los espacios y los nombres, se puede usar un PV y su PVC para 
+pods especificos.
+
+A diferencia de los volumenes comunes, estos no varian dependiendo de la instancia, por eso
+son "persistent".
+
+**El PV no se usa en el master, si no que afecta a los worker**.
+
+- Volumen persistente manual
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: [pv_name]
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+```
+
+Luego se puede crear el PersistentVolumeClaim para que pueda usar un espacio determinado
+según el PV que lo satisfaga
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: [pvc_name]
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+```
+
+Ejemplo de un POD con un PVC específico
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-pv-pod
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: task-pv-claim
+  containers:
+    - name: task-pv-container
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+```
+
 ## Backups
 
 - ETCD
@@ -144,6 +233,8 @@ En ambos ("create" y "apply") los tipos que se soportan son;
 22. service nodeport
 23. serviceaccount
 24. token
+25. pv
+26. pvc
 
 ### - Editar deployment
 
@@ -177,6 +268,8 @@ Para un pod específico
 3. pods
 4. svc (services)
 5. rc (replication controller)
+6. pv (persistent volume)
+7. pvc (persistent volume claim)
 
 > kubectl cluster-info
 

@@ -6,6 +6,7 @@
 - [Bash](./bash.md)
 - [DataDog](./datadog.md)
 - [Ensamblador ARM](./arm_assembly.md)
+- [Helm - K8S](./helm.md)
 - [JavaScript](./js.md)
 - [Jenkins](./jenkins.md)
 - [Kubernetes](./k8s.md)
