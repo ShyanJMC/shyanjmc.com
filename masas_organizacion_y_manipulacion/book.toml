@@ -1,0 +1,23 @@
+[book]
+authors = ["Joaquin <ShyanJMC> Crespo"]
+language = "es"
+multilingual = false
+src = "src"
+title = "Masas: Organización, manipulación y subsistencia"
+description = "Sobre como se organizan las masas y sus manipulaciones desde los que las engendran y subsisten"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+curly-quotes = true
+mathjax-support = true
+copy-fonts = true
+no-section-label = false
+git-repository-url = "https://github.com/ShyanJMC"
+git-repository-icon = "fa-github"
+site-url = "/masas_organizacion_y_manipulacion/"
+cname = "shyanjmc.com"
+
+[output.html.print]
+enable = true    # include support for printable output
+page-break = true # insert page-break after each chapter
