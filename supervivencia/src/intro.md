@@ -9,7 +9,7 @@ sea aplicable según tu situación.
 
 | Versión del documento | 
 | :---: |
-| v0.1.0 | 
+| v0.2.0 | 
 
 Casos aplicables (a gran o pequeña escala);
 
