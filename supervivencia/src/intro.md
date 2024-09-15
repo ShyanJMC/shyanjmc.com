@@ -9,4 +9,26 @@ sea aplicable según tu situación.
 
 | Versión del documento | 
 | :---: |
-| v0.0.0 | 
+| v0.1.0 | 
+
+Casos aplicables (a gran o pequeña escala);
+
+- Escalada bélica
+
+  Enfrentamientos entre diferentes agentes; Estados, grupo guerrilleros, ataques terroristas, etc.
+
+- Enfrentamientos personales en ambientes urbanos y rurales
+
+  Intentos de robos con armas blancas, de fuego, entraderas a los inmuebles habitados, etc.
+
+- Desastre natural
+
+  Inundaciones, terremotos, incendios, etc.
+
+- Colapso económico
+
+  Quiebra de un Estado en un país, colapso de las redes de aprovisionamiento, colapso en la economía personal del hogar, etc.
+
+- Pandemia (global)
+
+  Pandemias de diferentes enfermedades que obliguen a la población a aislarse y provoquen alguno o varios de los anteriores casos.
