@@ -1,5 +1,7 @@
 # JavaScript
 
+<!-- toc -->
+
 Es un estándar (ECMAScript), por lo que cada engine puede expandirlo.
 
 - TypeScript
@@ -12,15 +14,88 @@ Al estar pensado para scripting, sigue el mismo esquema que BASH; solo
 ejecuta funciones si son llamadas directamente, el resto lo procesa todo en tiempo 
 de ejecución.
 
+# Deno
+
 ## Instalar Deno Engine
 
 > curl -fsSL https://deno.land/install.sh | sh
 
 ## Ejecutar un archivo
 
-> deno run [archivo]
+> deno run [archivo].ts
 
 - "--allow-net" para permitir que el archivo use red
+- "--config" para especificar otro archivo de configuración deno.json ó deno.jsonc
+
+## Vendor - Dependencias en local
+
+> deno cache [archivo].ts
+
+## Archivos de proyecto
+
+- deno.json ó deno.jsonc
+
+  Contiene las dependencias y configuración del proyecto para
+  el compilador, formateador y enlazador.
+
+  Si contiene "tasks" permite acortar comandos largos
+  en una simple tarea. Las tareas se corren con; "deno task [name]"
+
+  Si contiene "fmt" permite personalizar como
+  va a formatear si se corre un "deno fmt".
+
+  Si contiene el tuple "exclude" se puede indicar
+  que directorios no se quiere incluir por parte de la ejecución
+  de Deno.
+
+```typescript
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "lint": {
+    "include": ["src/"],
+    "exclude": ["src/testdata/", "src/fixtures/**/*.ts"],
+    "rules": {
+      "tags": ["recommended"],
+      "include": ["ban-untagged-todo"],
+      "exclude": ["no-unused-vars"]
+    }
+  },
+  "fmt": {
+    "useTabs": true,
+    "lineWidth": 80,
+    "indentWidth": 4,
+    "semiColons": false,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "include": ["src/"],
+    "exclude": ["src/testdata/", "src/fixtures/**/*.ts"]
+  },
+  "lock": false,
+  "nodeModulesDir": true,
+  "unstable": ["webgpu"],
+  "npmRegistry": "https://mycompany.net/artifactory/api/npm/virtual-npm",
+  "test": {
+    "include": ["src/"],
+    "exclude": ["src/testdata/", "src/fixtures/**/*.ts"]
+  },
+  "tasks": {
+    "start": "deno run --allow-read main.ts"
+  },
+  "imports": {
+    "oak": "jsr:@oak/oak"
+  },
+  "exclude": [
+    "dist/"
+  ]
+}
+```
+
+
+# TypeScript - JavaScript
 
 ## Comentarios
 
@@ -29,6 +104,14 @@ de ejecución.
 ```
 
 ## Importar 
+
+Deno soporta tanto NPM como JSR.
+
+**Consideración; la función debe estar dentro de "{}" cuando el módulo
+no tiene un "export default function ....."**
+
+Las funciones que no necesitar las "{}" en el import son las que tienen
+en su módulo un el default.
 
 - De otros archivos
 
@@ -44,13 +127,17 @@ import [Struct],[function_N] from "./[archivo].ts";
 import [Function] from "[package_registry]:@std/[module]"
 ```
 
-Deno soporta tanto NPM como JSR.
+### Importar desde JSR
 
-**Consideración; la función debe estar dentro de "{}" cuando el módulo
-no tiene un "export default function ....."**
+```typescript
+import [Function] as mod from "jsr:@[user_or_organization]/[module]"
+```
 
-Las funciones que no necesitar las "{}" en el import son las que tienen
-en su módulo un el default.
+### Importar desde NPM
+
+```typescript
+import [Function] from "npm:[module]@[version]"
+```
 
 ## Variables y constantes
 
@@ -263,6 +350,28 @@ let varbuffer2 = string1[0,5];
 console.log("Buffer1 es;" + varbuffer + '\n' + "Buffer2 es;" + varbuffer2);
 ```
 
+## Tests - Pruebas
+
+Esto lo ofrece el motor Deno
+
+```js
+import { assertEquals } from "jsr:@std/assert";
+import Person, { sayHello } from "./person.ts";
+
+Deno.test("sayHello function", () => {
+  const grace: Person = {
+    lastName: "Hopper",
+    firstName: "Grace",
+  };
+
+  assertEquals("Hello, Grace!", sayHello(grace));
+});
+```
+
+Luego se ejecuta ese testeo con;
+
+> deno test [archivo].ts
+
 ## Funciones comunes
 
 - Imprimir en pantalla
@@ -291,3 +400,11 @@ Al ser guardado en una variable, si se imprime en pantalla también necesita un 
 - Obtener el largo de una cadena
 
 > [string_variable].length
+
+- Ejecutar proceso hijo
+
+> new Deno.command("[path]/[binario]", [args], [opciones])
+
+Algunas de las opciones son; 
+	- stdin: "piped",
+	- stdout: "piped",
