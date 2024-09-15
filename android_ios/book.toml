@@ -25,3 +25,8 @@ page-break = true # insert page-break after each chapter
 
 [output.html.fold]
 enable = true
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
+max-level = 6

@@ -20,3 +20,8 @@ cname = "shyanjmc.com"
 [output.html.print]
 enable = true
 page-break = true
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
+max-level = 6
