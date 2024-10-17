@@ -17,7 +17,6 @@
 - [Entrenamiento](./entrenamiento.md)
 - [Escapar de la ciudad](./escapar_de_la_ciudad.md)
 - [Fuego](./fuego.md)
-- [Higiene bucal](./higiene_bucal.md)
 - [Higiene personal](./higiene_personal.md)
 - [Idiomas](./idiomas.md)
 - [Ingenieria social](./ingsocial.md)
