@@ -41,7 +41,7 @@ a entender la situación y distraerlos.
 
 El agua tiene que ser purificada antes de ser consumida, entendemos por "purificación" a;
 
-1. La eliminación de bacterias, virus y parásitos que nos pueden enfermar y/o matar.
+1. La eliminación de bacterias, virus y parásitos que nos pueden enfermar y/o matar. Uno de las bacterias que habita en todas las costas es el vibrio cholerae que provoca la cólera.
 2. La eliminación de residuos líquidos y físicos que nos pueden enfermar y/o dañar mecánicamente (cortes, etc).
 
 **Para purificar el agua de bacterias, virus y parásitos**, debemos hervirla durante un 1.30 minutos (un minuto y 30 segundos) desde que
