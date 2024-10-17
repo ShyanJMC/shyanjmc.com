@@ -9,6 +9,35 @@ Si se encuentra en un grupo, la persona que más hará la diferencia no es la qu
 si no la persona que con carisma (Especial capacidad de algunas personas para atraer o fascinar) y empatía pueda mantener al grupo unido, evitar
 peleas, entretenerlos y seguir haciendo que den un poco más de esfuerzo cada vez para que no se rindan. Véase; **un/a lider**.
 
+## Nativos
+
+Los nativos de las zonas en donde puede necesitar ayuda en un contexto de supervivencia suelen ser amigables, 
+pero debe tener en cuenta que son poblaciones aisladas y que generalmente no suelen hablar tu mismo idioma.
+
+Primero, considere que usted es un desconocido que está llegando a su territorio, por lo que es normal
+que se pongan muy nerviosos por miedo a ser invadidos. 
+
+Segundo, **no tenga en sus manos; armas de fuego, cuchillos, etc eso solamente servirá para que la situación escale peligrosamente**.
+
+Tercero, no haga movimientos bruscos con sus manos, levante las manos mostrando que no está en intenciones
+de luchar y quédese quieto. Si los nativos le hablan, diga con palabras simples "agua" (con gesto de la acción de tomar agua) y 
+"comida" (con gesto de la acción de comer algo), puede ser inteligente intentar aprender el idioma del país en la región que está
+esa tribu ya que muchas conocen unas pocas palabras.
+
+## Enfrentamientos
+
+Ni usted ni el resto quiere encontrarse en un enfrentamiento armado (armas de fuego o blancas) en un contexto de supervivencia, bajará
+sus probabilidades de sobrevivir prácticamente a cero.
+
+Si se encuentra en una situación muy tensa; trate primero de que todos escuchen lo que tenga que decir usted como lider
+del grupo, luego acuerde entre su grupo y el otro que tanto usted como el otro lider ordenaran bajar las armas de forma lenta
+para que nadie se sienta amenazado (puede funcionar un gesto de buena fe como dejar el arma en el suelo por su parte para
+iniciar) y por último traten de llegar a un entendimiento en común entre ambos grupos. 
+
+Cada enfrentamiento y situación tensa es diferente, mientras que en algunas situaciones están todos nerviosos por que
+cada uno está intentando sobrevivir y proteger a sus amigos/familiares/hijos y con un poco de diálogo puede
+resolverse todo de forma tranquila (y hasta conseguir aliados), en otras situaciones el luchar puede ser inevitable.
+
 ## Linea y cadena de mando
 
 Una organización humana que determine quien se encarga de qué tipo de decisiones es primordial. 
