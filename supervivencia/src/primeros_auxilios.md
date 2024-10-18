@@ -3,6 +3,67 @@
 Los primeros auxilios son las medidas que nosotros tomaremos cuando ocurra una emergencia médica
 que requiera una intervención.
 
+Siempre debemos considerar que los primeros auxilios no son para la totalidad de la emergencia, si no
+como primeras medida que debemos tomar. Pero siempre deberá ser el personal médico debidamente
+entrenado el que realice luego los procedimientos respectivos.
+
+## Vendajes, telas y revestimientos
+
+No debemos usar vendajes ya usados o telas y revestimientos sucios. Si no poseemos 
+vendajes puros, debemos hervir al vapor las telas y revestimientos limpios en una
+olla con agua y su tapa.
+
+## Shock
+
+Se caracteriza por palidez, tembladera, sudor, sed y a veces herida. (Existen distintas 
+clases de shock: séptico, hipovolémico, anafiláctico, etc.) 
+
+Mientras más severa la herida, mayor la posibilidad de un shock. Si el paciente está 
+inconsciente, échelo de espalda, levante los pies, a menos que tenga una herida en la 
+cabeza o dificultad de respirar. Manténgalo cómodamente abrigado, pero evite sobre calentarlo. 
+
+Si el paciente está consciente, dele bebidas tibias. Si está solo, recuéstese por
+24 horas en un lugar protegido del viento y los pies más arriba que la cabeza.
+
+## Diarrea y vómitos
+
+Puede ser por varias razones; comida en mal estado o envenenada, falta de acostumbramiento a una 
+comida nueva o asco (sí, psicológicamente puede reflejarse en el cuerpo).
+
+En caso de diarrea trate de hacerla fuera de lugares con agua, para no contaminarla, mejor si es en
+una letrina. Preste mucha atención a que tan bien se limpia luego las manos, evite tocar el resto de cosas luego
+de limpiarse. Tome mucha agua y no coma hasta que se recupere, luego vuelva a comer muy de a poco.
+
+Se pueden usar pastillas de carbón activado para frenar la diarrea. No afectan a la diarrea en si, si no que
+el carbón activado servirá como un filtro que limpiará las impurezas que tenga en su intestino, ayudando a cortar
+el proceso natural de su cuerpo por expulsarlo.
+
+## Fracturas
+
+Use extremo cuidado al mover personas con fracturas, para evitar heridas adicionales. 
+
+Si también hay herida, desgarre la ropa y cure la herida antes de entablillar. Entablille al paciente antes de moverlo. 
+
+Improvise tablillas de ramas, etc. Acolchone la tablilla y con ella sujete encima y debajo de la fractura.
+
+## Torceduras. 
+
+Vende el miembro con torcedura. Aplique frío las primeras 24 hrs. Luego aplique calor.
+
+## Conmoción. 
+
+Se debe sospechar fracturas o heridas en la cabeza si hay desmayo, si sale agua con sangre de la nariz u oídos, 
+convulsión, pupilas desiguales (o falta de reacción de las pupilas a luz concentrada), dolor de cabeza y vómitos. 
+
+Mantenga al paciente abrigado y seco, y muévalo con delicadeza.
+
+## Quemaduras. 
+
+La quemadura por insolación es la más común. 
+
+Proteja al paciente del sol y aplique un ungüento aceitoso. Cubra las quemaduras para protegerlas del polvo. 
+Dele al paciente mucho líquido. Mantenga en descanso el área afectada
+
 ## Sangrados
 
 - Objeto penetrado
@@ -41,11 +102,15 @@ que requiera una intervención.
 
 - Sangrado constante
 
-  Si hemos inmovilizado el miembro accidentado, le hemos realizado los priemros auxilios descritos arriba y aún así el sangrado
+  Si hemos inmovilizado el miembro accidentado, le hemos realizado los primeros auxilios descritos arriba y aún así el sangrado
   continua (de tal forma que no podemos controlar la hemorragia) entonces ahí procederemos a realizar un torniquete.
 
   El torniquete es simplemente un vendaje o prenda que aprieta tan fuerte en una extremidad que el flujo de sangre desde-hacia la herida
-  baja o directamente se detiene, evitando así un sangrado mortal por hemorragia.
+  baja o directamente se detiene, evitando así un sangrado mortal por hemorragia. Pero esto debe realizarse como último recurso, ya que
+  un torniquete de mucho tiempo puede provocar la muerte del tejido afectado.
+
+  Una vez aplicado el torniquete, trate de que el miembro afectado se mueva lo menos posible. Si puede cargar a la persona en posición
+  horizontal y transportarla, hagalo solamente como último recurso.
 
 ## Cortaduras
 
