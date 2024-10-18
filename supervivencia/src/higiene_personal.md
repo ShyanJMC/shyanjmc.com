@@ -58,7 +58,7 @@ nafta, kerosene, etc. Los usaremos sobre nuestra piel de forma directa y sin dil
 Si tenemos la enorme posibilidad de usar energia eléctrica, podemos usar
 mosquiteros eléctricos (que deben estar en la oscuridad para funcionar bien).
 
-## Abejas y avispas
+### Abejas y avispas
 
 Salvo que tengas una reacción alérgica no te matará su picadura, pero sí es en extremo
 dolorosa. Hay que evitar también que piquen de forma masiva en el cuerpo, ya que eso podría
@@ -66,6 +66,21 @@ provocar un shok en el cuerpo por tal aumento del veneno.
 
 Para evitarlas debemos prestar atención a los sonidos y evitar los enjambres, pero si nos atacan
 hay que correr entre matorrales o vegetación densa para que las aleje. 
+
+## Higiene alimenticia
+
+Para alimentarse use elementos esterilizados con el calor, si tiene multi herramientas o elementos 
+de metal/madera que vaya a usar como tenedor/cuchillo, antes limpielo con una hoja que luego deseche 
+inmediatamente y luego póngalo al fuego durante 1 (uno) o 2 (dos) minutos.
+
+**No coma con las manos.**
+
+### Higiene de los alimentos
+
+Si le sobra comida y/o agua, no debe quedar al descubierto. Guardela en recipientes limpios o 
+envueltos en telas.
+
+Antes de consumir los alimentos verifique su olor y que no contengan moscas ni larvas.
 
 ## Higiene bucal
 
@@ -96,6 +111,11 @@ provocarle cortes.
 
 Siempre hay que revisar varias veces y muy bien los zapatos y la ropa en general antes
 de usarlos, ya que los escorpiones y arañas se esconden ahí.
+
+Si los zapatos le quedan cómodos y los mantiene secos, si cambia las medias con frecuencia y ejercita los pies, no debe tener problema con ampollas. 
+
+Si llegara a tener una ampolla, use una aguja (o navaja) esterilizada y perfore la ampolla en la base donde la piel es más gruesa. 
+Presione y drene la ampolla. Luego aplique una venda limpia para prevenir que la piel sea friccionada antes de curarse.
 
 ## Limpieza personal
 
