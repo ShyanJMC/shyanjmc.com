@@ -50,6 +50,13 @@ rápido la temperatura;
 
    **Siempre es recomendable tener una segunda muda de ropa por si la primera se moja, debes estar siempre seco/a**.
 
+El tratamiento contra congelamiento consiste en llevar al paciente a un lugar con temperatura normal cuanto antes; 
+rápidamente sumergir las partes congeladas en agua tibia (30 ºC - 40 ºC); o poner las manos tibias sobre la parte congelada, o con aire tibio. 
+
+**¡No se debe masajear ni aplicar frio al area afectada!**
+
+No reviente ampollas si estas aparecen.
+
 ## Refugios
 
 En climas frios deberás considerar que tenés que protegerte principalmente de la capa de aire exterior y del viento, siendo
