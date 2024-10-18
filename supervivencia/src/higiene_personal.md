@@ -2,6 +2,39 @@
 
 La higiene personal es la que hará la diferencia entre la enfermedad y la muerte, y la vida.
 
+## Vacunas
+
+Sin importar si usted, su padre/madre/pareja o vecino son antivacunas. La realidad es que el 70% 
+de la población actual no estaria vivo/a de no ser por las vacunas.
+
+Según un estudio ([acá publicado](https://www.who.int/es/news/item/24-04-2024-global-immunization-efforts-have-saved-at-least-154-million-lives-over-the-past-50-years))
+de la Organización Mundial de la Salud, en los últimos 50 años a fecha de creación de este
+capítulo (véase; desde 1984 hasta 2024) los esfuerzos mundiales en inmunización han salvado
+al menos 154 millones de vidas, principalmente en niños/as menores de 1 (un) año.
+
+Las vacunas principales que han servido para salvar más vidas son;
+
+1. difteria
+1. Haemophilus influenzae de tipo B
+1. hepatitis B
+1. encefalitis japonesa
+1. sarampión
+1. meningitis A
+1. tos ferina
+1. enfermedad neumocócica invasiva
+1. poliomielitis
+1. enfermedades provocadas por rotavirus
+1. rubéola
+1. tétanos
+1. tuberculosis
+1. fiebre amarilla
+
+Por lo tanto, consulte con su médico que vacunas se puede dar y apliqueselas. Es preferible gastar
+plata en la vacuna, y no estar sufriendo luego del dolor y malestar que viene con la enfermedad.
+
+Hay muchas vacunas que con dos aplicaciones ya uno tiene inmunidad por tiempo indefinido, en algunos
+casos incluso de por vida.
+
 ## Insectos y arácnidos
 
 Acá incluimos algunos tan peligrosos como; mosquitos, ácaros, garrapatas, arañas, etc.
@@ -13,16 +46,26 @@ si nos inyectan la cantidad suficiente de veneno (arañas, escorpiones, etc).
 Muchos arácnidos nos evitaran (arañas principalmente) por lo que debemos evitar interactuar 
 con ellos. Mientras caminemos hagamos ruido con nuestras piernas al pisar y con nuestra voz,
 ya que casi todos los arácnidos "escuchan" (ya que no es precisamente eso) a través de los 
-pelos táctiles que los recubren (tan característicos en arañas de gran tamaño).
+pelos táctiles que los recubren (tan característicos en arañas de gran tamaño). Esto también
+sirve para evitar serpientes venenosas.
 
 Para el resto de arácnidos (garrapatas, ácaros, etc) e insectos (mosquitos) que nos 
 buscarán activamente para alimentarse de nuestra sangre o restos de piel, debemos usar
-agentes nocivos como; vinagre, jugo de limón, etc. Los usaremos sobre nuestra piel de
-forma directa y sin diluir, el tiempo aproximado de duración de estas medidas es de 
+agentes nocivos como; vinagre, jugo de limón, alcohol (no recomendado por que se evapora rápido),
+nafta, kerosene, etc. Los usaremos sobre nuestra piel de forma directa y sin diluir, el tiempo aproximado de duración de estas medidas es de 
 25 minutos (jugo de limón) a las 3 horas (vinagre de alcohol).
 
 Si tenemos la enorme posibilidad de usar energia eléctrica, podemos usar
 mosquiteros eléctricos (que deben estar en la oscuridad para funcionar bien).
+
+## Abejas y avispas
+
+Salvo que tengas una reacción alérgica no te matará su picadura, pero sí es en extremo
+dolorosa. Hay que evitar también que piquen de forma masiva en el cuerpo, ya que eso podría
+provocar un shok en el cuerpo por tal aumento del veneno.
+
+Para evitarlas debemos prestar atención a los sonidos y evitar los enjambres, pero si nos atacan
+hay que correr entre matorrales o vegetación densa para que las aleje. 
 
 ## Higiene bucal
 
@@ -40,7 +83,8 @@ No debemos usar el carbón activado más de una vez al día.
 ## Higiene de los pies
 
 Cuando descanse, quitese el calzado y las medias, sus pies necesitan respirar apropiadamente
-para mentenerse a salvo de heridas, humedad y bacterias. Evite tocar el piso.
+para mentenerse a salvo de heridas, humedad y bacterias. Evite tocar el piso. No duerma
+sin tener el cazado puesto.
 
 Con un trapo seco y limpio, limpie sus pies para quitar humedad y suciedad. Revise si tiene o no
 heridas que tenga que desinfectar.
@@ -49,6 +93,9 @@ Deje secar todos los días sus medias, lávelas siempre que pueda.
 
 Puede usar grasa para ayudar a proteger su piel de insectos y ciertos elementos físicos que pueden
 provocarle cortes.
+
+Siempre hay que revisar varias veces y muy bien los zapatos y la ropa en general antes
+de usarlos, ya que los escorpiones y arañas se esconden ahí.
 
 ## Limpieza personal
 
@@ -71,7 +118,8 @@ La ropa no debe estar mojada, ni manchada de líquidos de origen biológico (exc
 ya que puede provocar infecciones de diversa índole.
 
 Si la ropa es manchada trate de limpiarla, si no puede busque un remplazo apropiado en caso 
-de que el agente sea de peligro biológico.
+de que el agente sea de peligro biológico. El lugar de limpieza no debe ser rios ni lagos, 
+ya que se corre riesgo de infectar toda la masa de agua.
 
 ## Manejo y limpieza de excrementos
 
@@ -193,4 +241,11 @@ Obviamente luego de defecar debemos limpiarnos, si estamos en climas húmedos po
 Si estamos en otros lugares diferentes, podemos usar cualquier papel que retenga bien el material sin que nos ensuciemos las manos y el resto
 del cuerpo (el diario poroso sirve), si tenemos plantas con hojas de tamaño considerable también podemos usarlas siempre y cuando no 
 tengan "pelos" que nos puedan provocar una reacción alérgica.
+
+Tenga cuidado en rios, ya que hay muchos parásitos que (en conjunto con virus y bacterias) pueden infectarlo/a si tiene heridas (aunque
+no las notes) o entrar por algún agujero íntimo. Es recomendable hervir agua por 3 minutos y usarla a conciencia para 
+limpiarse con un trapo (se puede hervir también).
+
+Las sanguijuelas también son otra cosa a prestar atención en los rios y lagos, con un cuchillo o algo encendido las podemos sacar. 
+Debemos luego tratar la herida.
 
