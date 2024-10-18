@@ -16,6 +16,7 @@
 - [EDC; Every Day Carry](./edc-every_day_carry.md)
 - [Entrenamiento](./entrenamiento.md)
 - [Escapar de la ciudad](./escapar_de_la_ciudad.md)
+- [Escenarios maritimos](./escenarios_maritimos.md)
 - [Fuego](./fuego.md)
 - [Higiene personal](./higiene_personal.md)
 - [Idiomas](./idiomas.md)
