@@ -32,3 +32,14 @@ Casos aplicables (a gran o pequeña escala);
 - Pandemia (global)
 
   Pandemias de diferentes enfermedades que obliguen a la población a aislarse y provoquen alguno o varios de los anteriores casos.
+
+## Bibliografia
+
+| Fuente de información | Motivo |
+| :---: | :---: |
+| Wikipedia | Para la búsqueda específica de las características de árboles, hongos, etc |
+| Manual de Supervivencia MNC - Fernando L. Yengle | - |
+| Basquecraft (Youtube) | Consejos variados de supervivencia así como algunas fotografías |
+| Chamo Gutiérrez (Youtube) | Causas, síntomas, signos y tratamientos de enfermedades médicas |
+| Migue ASSAL (Youtube) | Emergencias médicas y primeros auxilios |
+| Manual de enseñanza de supervivencia - Tomos 1 y 2 - Ejército Español | - |
