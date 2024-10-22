@@ -38,6 +38,21 @@ Cada enfrentamiento y situación tensa es diferente, mientras que en algunas sit
 cada uno está intentando sobrevivir y proteger a sus amigos/familiares/hijos y con un poco de diálogo puede
 resolverse todo de forma tranquila (y hasta conseguir aliados), en otras situaciones el luchar puede ser inevitable.
 
+Cosas que debemos evitar:
+
+1. Hablar directamente con los menores del grupo, solamente a los adultos hablaremos.
+1. Realizar movimientos bruscos que no estén previamente informados.
+1. Hacer sentir al otro grupo o persona que sus necesidades no valen, aunque nosotros estemos más urgidos.
+1. Insultar o denigrar al otro grupo o persona, recordemos que también son personas y están muy nerviosas.
+1. Hacer juicio de valor en base a lo que dice un/a desconocido/a del otro grupo cuando no es el/la lider.
+1. No llegar a una negociación o punto medio si no estamos seguros de que podemos ganar el enfrentamiento y que ellos lo saben.
+
+Cosas que si debemos hacer:
+
+1. Tratar de que ellos se sientan entendidos y comprendidos, más aún si hay menores.
+1. Tratar de que no nos indentifiquen como una amenaza, pero mantenernos firmes.
+1. Mostrar un acto de buena fe para que ellos sientan que nosotros no los vemos como una amenaza.
+
 ## Linea y cadena de mando
 
 Una organización humana que determine quien se encarga de qué tipo de decisiones es primordial. 
