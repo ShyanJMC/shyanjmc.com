@@ -18,3 +18,4 @@
 - [Seguridad](./16-seguridad.md)
 - [Clústeres](./17-clusters.md)
 - [Lenguajes de programación - Automatización](./18-programacion.md)
+- [Inteligencia Artificial local](./ia_local.md)
