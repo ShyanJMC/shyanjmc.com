@@ -37,6 +37,15 @@ a entender la situación y distraerlos.
 5. No importa qué tan fuerte sea la sed, no tome agua impura.
 6. No importa que tan fuerte sea la sed, no tome agua del mar.
 
+## Almacenaje
+
+Debemos almacenar todo el agua potable que podamos, si tenemos la suerte de estar en una localidad con acceso al agua
+potable, debemos almacenar unos 15 litros por persona, **como mínimo**. Esta agua será solamente para beber, no cocinar ni limpiarse.
+
+Podemos almacenar agua potable en botellas de plástico, pero para evitar la ingesta de microplásticos debemos evitar que las mismas
+estén al alcance de la luz solar o que sean recicladas más de 7 u 9 veces. Lo ideal es utilizar botellas de vidrio templado, que es más
+resistente a golpes y cambios fuertes de temperatura.
+
 ## Purificación
 
 El agua tiene que ser purificada antes de ser consumida, entendemos por "purificación" a;
