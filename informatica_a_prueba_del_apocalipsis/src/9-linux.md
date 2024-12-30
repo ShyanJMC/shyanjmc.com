@@ -305,7 +305,7 @@ montones de programas para realizar las funcionalidades básicas en todo sistema
 Como vimos en la parte de "Arquitectura" según la distribución que se esté usando, el gestor de paquetes será uno u otro. Y también si tenés o no permisos de "root" para
 poder instalar o desinstalar programas.
 
-Veamos comandos básicos;
+#### Comandos básicos
 
 1. Ver el contenido de un archivo
 
@@ -390,6 +390,37 @@ Veamos comandos básicos;
    Esto se utiliza también para renombrar. Si estás copiando un archivo y en destino indicas otro nombre distinto en vez de un directorio se va a renombrar al que indicas.
 
    Lo mismo para las carpetas/directorios.
+
+#### Administración del sistema operativo
+
+No todos los sysinits tienen los mismos comandos ni las mismas funcionalidades (principalmente SystemD que es gigante en funcionalidades).
+Por eso mismo acá te dejo una tabla comparativa entre OpenRC, SysVInit y SystemD:
+
+| Característica                  | SysVInit                           | OpenRC                              | SystemD                              |
+|--------------------------------|-----------------------------------|-------------------------------------|--------------------------------------|
+| **Modelo de funcionamiento**   | Basado en scripts init             | Basado en scripts init + OpenRC     | Basado en unidades (unit files)      |
+| **Velocidad de arranque**      | Lenta                          | Más rápida que SysVInit con inicio paralelo | Muy rápida (inicio paralelo)         |
+| **Paralelismo**                | No                                | Sí                                  | Sí                                   |
+| **Comandos principales**       | `service`                         | `rc-service`                        | `systemctl`                          |
+| **Inicio de servicios**        | `/etc/init.d/<servicio> start`    | `rc-service <servicio> start`       | `systemctl start <servicio>`         |
+| **Parada de servicios**        | `/etc/init.d/<servicio> stop`     | `rc-service <servicio> stop`        | `systemctl stop <servicio>`          |
+| **Estado de servicios**        | `/etc/init.d/<servicio> status`   | `rc-service <servicio> status`      | `systemctl status <servicio>`        |
+| **Gestión de servicios al boot**| `chkconfig <servicio> on/off`     | `rc-update add/del <servicio>`      | `systemctl enable/disable <servicio>`|
+| **Reinicio del sistema**       | `shutdown -r`                     | `reboot`                            | `systemctl reboot`                   |
+| **Apagado del sistema**        | `shutdown -h`                     | `halt`                              | `systemctl poweroff`                 |
+| **Ubicación de configuración** | `/etc/init.d/`                    | `/etc/init.d/`, `/etc/rc.conf`      | `/etc/systemd/system/`, `/usr/lib/systemd/` |
+| **Logs**                       | `/var/log/messages`               | `/var/log/messages`                 | `journalctl`                         |
+| **Soporte de dependencias**    | Limitado                          | Completo (en OpenRC)                | Completo                             |
+| **Monitoreo de servicios**     | No                                | Parcial                             | Sí                                   |
+| **Eventos en caliente**        | No                                | Sí                                  | Sí                                   |
+| **Comandos de reinicio**       | `telinit q`                       | `rc-service <servicio> restart`     | `systemctl restart <servicio>`       |
+| **Manejo de targets/niveles**  | `/etc/inittab` (runlevels)        | `/etc/rc.conf` (runlevels)          | Targets (`systemctl isolate <target>`) |
+| **Gestión de dependencias**    | Manual                            | Semi-automática (mediante OpenRC)   | Totalmente automática                |
+| **Arranque interactivo**       | `single` en línea de comandos     | `rc_single`                         | `systemctl rescue`                   |
+| **Compatibilidad**             | Scripts tradicionales de SysVInit | Compatible con SysVInit             | Parcialmente compatible con SysVInit |
+| **Soporte de sockets**         | No                                | Parcial                             | Sí                                   |
+| **Implementación**             | Simple y ligera                   | Ligera                              | Compleja y más pesada                |
+| **Uso típico**                 | Sistemas minimalistas o antiguos  | Sistemas orientados a BSD/Linux     | Distribuciones modernas              |
 
 ### Prácticas y documentación
 
