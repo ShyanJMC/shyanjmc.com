@@ -62,7 +62,15 @@ Si no sabemos que librería estándar estamos usando, o queremos saber su versi�
 
 Si necesitamos verificar si un binario esta enlazado estáticamente o dinámicamente, podemos utilizar la utilidad (comando) "ldd":
 
-![](data:image/png;baase64,)
+```bash
+[shyanjmc@sleipnir shyanjmc.com]$ ldd /home/shyanjmc/.cargo/bin/btm 
+	linux-vdso.so.1 (0x00006f7bd5b1a000)
+	libgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00006f7bd5acb000)
+	libm.so.6 => /usr/lib/libm.so.6 (0x00006f7bd5510000)
+	libc.so.6 => /usr/lib/libc.so.6 (0x00006f7bd5322000)
+	/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00006f7bd5b1c000)
+[shyanjmc@sleipnir shyanjmc.com]$ 
+```
 
 Como puede ver en la imagen superior, si el binario está enlazado dinámicamente se obtendrá el siguiente resultado:
 
