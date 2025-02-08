@@ -383,7 +383,7 @@ Pero también tenemos una complementación a todos los tipos anteriores muy inte
 
 Debemos entender algunos conceptos adicionales que aplican a todos los tipos de entrenamiento anteriormente listados:
 
-- Función de pérdida / costo
+- Función de pérdida / costo ("loss rate")
 
   Es una función que compara la salida que deseamos que tenga la red neuronal ('salida real / deseada') con la que dió
   la red al hacer una propagación hacia adelante (véase; una ejecución normal de la red). Luego se comparan los valores
@@ -391,6 +391,23 @@ Debemos entender algunos conceptos adicionales que aplican a todos los tipos de 
   menor es la precisión del modelo).
 
   Un ejemplo de esto es MSE (Medium Square Error).
+
+  **Tanto en el aprendizaje como en el fine tuning, no siempre un valor de cero absoluto es lo mejor. A un valor mayor, significa
+  que la red neuronal todavia está aprendiendo, mientra que a un valor cercano a cero significa que ya aprendió y se está sobre ajustando 
+  (lo cual tampoco es bueno). Lo ideal es que el ratio de pérdida oscile entre 0.399 y 0.799.**
+
+  Si el valor final del loss rate es mayor a 1.000, significa que necesita un learning rate (ver abajo) más bajo y varios epoch (ver abajo). Si el valor
+  queda a menor de 0.399 significa que el modelo puede dar respuestas perfectas en el dataset de entrenamiento, 
+  pero fallar en datos nuevos (poca capacidad de generalización).
+
+  | **Loss Rate** | **Interpretación** |
+  |--------------|-------------------|
+  | **> 1.0**   | Modelo está aprendiendo, pero todavía es muy inexacto. |
+  | **0.6 - 1.0** | Sigue ajustando parámetros, pero hay espacio para mejora. |
+  | **0.3 - 0.5** | **Buen balance entre aprendizaje y generalización.** |
+  | **0.1 - 0.3** | Posible ajuste fino, pero riesgo de sobreajuste. |
+  | **< 0.1** | Modelo puede estar sobreajustando el dataset. |
+  | **~0.0004** | **Modelo está completamente sobreajustado.** |
 
 - Tasa de aprendizaje ("Learning Rate")
 
@@ -406,6 +423,9 @@ Debemos entender algunos conceptos adicionales que aplican a todos los tipos de 
   Un valor cercano a cero (0) enfatiza aprender las diferencias (el gradiente) y relaciones entre todos los datos (en cada una de las capas), 
   mientras que un valor cercano a uno (1) enfatiza el último cambio (sin considerar todo lo anterior a ese cambio). De ahí
   que un valor más bajo aumenta la precisión del aprendizaje, y es más lento.
+
+  Un valor bastante común y equilibrado es; " 1.866666666666667e-05 ". Prestá atención al número y verás que no es un entero, si no que el tener
+  "e" indica que es un decimal, por lo tanto " 1.866666666666667e-05 " es equivalente a " 0.00001866666 ".
 
 - "Propagación hacia atrás de los errores" o retropropagación ('backpropagation') 
 
@@ -750,6 +770,27 @@ una reducción dimensional bastante grande.
 Que tantos datos le pongamos para ser aprendidos esta determinado por el "batch" (a mayor batch mayor cantidad de datos procesados a la vez 
 pero mayor peso en la VRAM).
 
+** Una consideración muy importante del dataset; a mayor cantidad de información en cada archivo (JSON o el que sea el formato), mayor
+cantidad de memoria RAM que se va a usar. Puede parecer algo lógico y obvio, pero para que te des una idea; un dataset JSON de 25M
+ha llegado a consumirme 35 GB de RAM, por como tiene que manejar y crear los tokens. Es preferible crear datasets chicos (aproximadamente 100 kb)
+en donde luego el proceso de fine tuning lo cargue desde el almacenamiento en RAM, lo tokenice, entrene el modelo, lo descargue de la memoria RAM
+y luego siga con el siguiente.**
+
+Otra consideracion es que si tenemos varios inputs iguales con distintos outputs (por ejemplo; "que programas tienen esta carpeta?") la IA no va a ser 
+capaz de devolver varios valores, por que aprendió por el dataset que le diste que es; 1 input -> 1 salida. En este caso tenes que modificar el dataset
+para que el formato sea;
+
+```json
+[
+	{
+		"instruction": "XXXXXXXXXXXXXXXXXXXXXXX"
+		"input": "YYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
+		"output": "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+		          "ZZZZZZZZZZZZZZZZZZZZZZ222222"
+	}
+]
+```
+
 #### Destilación
 
 Preparate por que esto es muy importante; El 20 de Enero de 2025, una empresa de origen chino llamada DeepSeek lanzó su modelo DeepkSeek-R1, 
@@ -1090,9 +1131,191 @@ convert_llama_ggml_to_gguf.py
 convert_lora_to_gguf.py
 ```
 
+Recorda que como el formato GGUF contiene *todo* lo que la IA necesita en un solo archivo, es extremadamente
+necesario que el HF, GGML o Lora que vayas a convertir tenga estos archivos adicionales (o si no fallara todo) en el mismo
+directorio;
+
+- config.json
+- tokenizer.json
+- tokenizer_config.json
+- generation_config.json
+- tokenizer.model
+
+**Te puedo decir por experiencia que perder 9 hs peleando con que el modelo no podia interpretar caracter alguno por que
+en el directorio desde donde se convirtieron los archivos le faltaba el "tokenizer.model" no es agradable.**
+
 | Nota |
 | :---: |
 | Todos los tutoriales que veas que usan el script "convert.py" son viejos y desactualizados. Ahora hay scripts específicos como te mostré arriba |
+
+### Ejecutar modelos localmente
+
+Vamos a utilizar los siguientes componentes para estos escenarios;
+
+- Llama.cpp como engine para inferencia por CLI (Command Line Interface).
+- Ollama como servidor backend.
+- AnythingLLM como servidor frontend para usar el modelo desde el navegador web.
+
+#### Llama.cpp
+
+Llama.cpp fue desarrollado por Georgi Gerganov. Implementa la arquitectura LLaMa de Meta en C/C++ eficiente, y es una de las comunidades de código 
+abierto más dinámicas en torno a la inferencia LLM, con más de 900 colaboradores, más de 69000 estrellas en el repositorio oficial de GitHub y más 
+de 2600 versiones.
+
+Vamos a compilar llama.cpp y a saber como usarlo para ejecutar localmente por CLI el modelo;
+
+> git clone https://github.com/ggerganov/llama.cpp && cd llama.cpp
+
+Tenemos que instalar los requisitos / dependencias de Python y cmake (dependiendo de su distro tenes que instalarlo de una forma u otra);
+
+> pip install -\-break-system-packages -r requeriments.txt 
+
+Creamos el directorio "build" y compilamos dentro de ese directorio;
+
+> mkdir build/ && cmake ../
+
+Luego con "make" compilamos el programa, si queres habilitar que use la GPU (guarda que si no tenes suficiente VRAM no vas a poder
+cargar el modelo) tenes que usar la variable de entorno "LLAMA_CUDA=1", pero si queres que sea todo en CPU y RAM tiene que tener valor 
+cero;
+
+> LLAMA_CUDA=0 make 
+
+Luego instalamos el programa para todo el sistema operativo / contenedor (tenes que tener permisos de root con sudo o ser root directamente);
+
+> make install
+
+Una vez listo podemos ejecutar el cliente;
+
+> llama-cli 
+
+Quizás tengas un error de que una librería (por ejemplo; libllama.so) no se encuentra, ejecuta este comando (dentro del directorio de llama.cpp) y andará;
+
+> cp bin/*.so /lib/x86_64-linux-gnu/
+
+Vamos a ejecutar este comando para ejecutar el modelo por CLI. Te recomiendo que siempre leas primero el comando
+y aprendas que esta haciendo antes de ejecutar;
+
+> llama-cli -t 8 -np 10 -ngl 0 -cnv -m [path_absoluto_al_modelo_gguf] -p "You are a gentile and useful assistant"
+
+Desgranemos que hace cada argumento;
+
+- "-t X" 
+
+  Ejecuta X cantidad de hilos (threads) para la inferencia. A mayor cantidad de cores en tu CPU es mejor que aumentes este.
+
+- "-np X"
+
+  Ejecuta X cantidad de secuencias paralelas para decodificar en el "output". A mayor cantidad de cores en tu CPU es mejor que aumentes este.
+
+- "-ngl 0"
+
+  La cantidad de capas a ser almacenadas en la VRAM. Yo lo seteo en cero para que ande todo en CPU.
+
+- "-cnv"
+
+  Modo en conversación.
+
+Si obtenes este error;
+
+```
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  this custom template is not supported
+Aborted
+```
+
+Entonces hay que crear y especificar el chat template, en llama.cpp define cómo se formatea la 
+entrada para modelos de conversación, asegurando que los mensajes del usuario, las respuestas del 
+asistente y otros metadatos sean procesados adecuadamente.
+
+El formato de la plantilla de chat debe coincidir con el estilo en el que el modelo fue entrenado.
+** Cuando tuve este error era por que al convertir el modelo a GGUF me falto el tokenizer.model en la carpeta, asi que
+fijate si tenes los archivos esenciales que indique antes en "Convertir con llama.cpp"**
+
+El de Gemma 2 es;
+
+```
+{{ bos_token }}{% if messages[0]['role'] == 'system' %}{{ raise_exception('System role not supported') }}{% endif %}{% for message in messages %}{% if (message['role'] == 'user') != (loop.index0 % 2 == 0) %}{{ raise_exception('Conversation roles must alternate user/assistant/user/assistant/...') }}{% endif %}{% if (message['role'] == 'assistant') %}{% set role = 'model' %}{% else %}{% set role = message['role'] %}{% endif %}{{ '<start_of_turn>' + role + '
+' + message['content'] | trim + '<end_of_turn>
+' }}{% endfor %}{% if add_generation_prompt %}{{'<start_of_turn>model
+'}}{% endif %}
+```
+
+#### Ollama & AnythingLLM
+
+Ollama sirve como un servidor de modelos IAs, por lo que se puede usar en conjunto con frontends como AnythingLLM para disponibilizar los modelos.
+
+- Crear una IA
+
+  Ollama usa archivos 'Modelfile' para especificar todos los parámetros y argumentos a la hora de ejecutar un modelo.
+
+  Si usamos el formato GGUF (como recomiendo y voy a seguir haciendolo) simplemente en el mismo lugar donde esta ese archivo creamos un
+  archivo 'Modelfile' con esto dentro;
+
+```
+FROM .
+```
+  Luego ejecutamos;
+
+> ollama create [nombre_del_modelo]:[version_en_modo_TAG]
+
+  Cuando el proceso termine podremos verificar que esta disponible con;
+
+> ollama ls
+
+Voy a ser sincero, como siempre; si te pones a instalar AnythingLLM, luego ollama y disponibilizar todo vas a estar un buen rato, y 
+eso excede la finalidad de este libro. Yo ya arme un contenedor de docker/podman que tiene anythingllm y ollama funcionando.
+
+- [Contenedor AnythingLLM + Ollama](https://github.com/ShyanJMC/NordTools/tree/main/anythingllm-text_to_text)
+
+La diferencia es que si queres usar tu modelo local en vez de descargar desde los servidores Ollama, tenes que incluir este parámetro cuando ejecutes "[docker/podman] run ...";
+
+> -v [path_al_directorio_del_modelo]:/data
+
+Luego en el comando de "[docker/podman] exec" en vez de terminarlo con "/usr/local/bin/ollama pull llama3.1" tenes que poner;
+
+> /bin/bash
+
+Luego vas hasta "/data" y ejecutas el comando de "ollama create".
+
+Por último, abri tu navegador y anda a; http://[IP_de_la_maquina]:3001 
+
+Luego selecciona Ollama, y listo. Ya podes usar el modelo sin necesidad de internet desde tu navegador. Considera que la primera vez (y cada 15 minutos si no cambias la
+configuración) vas a tener que cargar el modelo en RAM. En mi experiencia habiendo quantificado Gemma 2 con 2 mil millones de parámetros (el "2b"), consume
+unos 7 GB a 8GB en RAM, por eso ejecuto en CPU y no en GPU; no tengo una GPU con tanta memoria (la VRAM).
+
+No te olvides de lo importante que es el formato de chat, AnythingLLM tiene un formato muy general que **no va a funcionar muy bien con nuestro formato del datset de Alpaca**.
+
+
+
+## Quantifición
+
+Podes usar herramientas con WebGUI (Web Graphical User Interface) o por scripts para hacer el trabajo de quantificar; he usado programas
+de la primera opción como Llama-Factory pero luego me di cuenta que es mejor usar código para hacer todo el trabajo.
+
+Te dejo un script en Python en donde ya quantifica Gemma 2 a 8 bits (esto es por que Gemma 2 tiene capas en su red neuronal muy concretas). 
+No pude armar uno general por la propia arquitectura de este modelo, por ende; si queres usar otro usa ChatGPT, Gemini o lo que uses para modificarlo
+y adaptarlo al modelo que necesitas quantificar a 8 bits.
+
+- []()
+
+## Fine tuning
+
+Hay dos formas de hacer un fine tuning;
+
+1. Con una GPU con suficiente VRAM para cargar el modelo, todo el dataset, y las modificaciones con los adaptadores de LoRA.
+1. Con CPU y RAM, que seguramente tenes memoria suficiente para almacenar todo.
+
+Usar GPU para hacer el entrenamiento es muy eficiente, pero considerá lo que dije arriba; Gemma 2 2b (el modelo más chico) quantificado (encima) 
+a 8 bits consume para ejecutarse entre 7 y 8GB.
+Pocas GPUs tienen VRAM suficiente como para cargar no solamente el modelo si no todo el resto de información.
+
+Usar CPU es mucho más lento, pero es mucho más probable que tengas la RAM suficiente para ejecutar todo.
+
+Como mi caso es de no tener una GPU con VRAM suficiente (una 3050 TI de notebook de 4 GB en VRAM), hice un script en python que se encarga de cargar todo en CPU, una
+carpeta donde están los JSON para el entrenamiento y realizar el proceso.
+
+- []()
+
 
 ## Documentos de aprendizaje
 
