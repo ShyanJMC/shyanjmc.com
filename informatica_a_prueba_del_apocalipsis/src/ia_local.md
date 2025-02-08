@@ -202,6 +202,11 @@ errónea.
 La forma en que se relacionan las capas ente si y con cada neurona de entrada-salida de las mismas es mediante 
 matrices matemáticas representadas en forma de software.
 
+Algo a considerar; las arquitecturas entre modelos suelen variar enormemente. No es la misma estructura
+ni arquitectura que tiene [Gemma](https://huggingface.co/blog/gemma2) (de Google), [Llama](https://huggingface.co/docs/transformers/en/model_doc/llama3) (de Meta) 
+y [Mixtral](https://huggingface.co/docs/transformers/model_doc/mixtral) (de Mistral), por poner unos
+pocos ejemplos. Por lo que funciona para un modelo, puede no funcionar (o hacerlo pobremente) para otros.
+
 #### Expertos - Mixture of Experts
 
 Los "expertos" son partes de la red neuronal que están entrenadas específicamente para un determinado tema,
