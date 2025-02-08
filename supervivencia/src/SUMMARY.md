@@ -25,6 +25,7 @@
 - [Orientación](./orientacion.md)
 - [Primeros auxilios](./primeros_auxilios.md)
 - [Plantas](./plantas.md)
+- [Psicología personal](./psico-personal.md)
 - [Refugio](./refugio.md)
 - [Rescate de rehenes y heridos](./rescates.md)
 - [Salubridad](./salubridad.md)
