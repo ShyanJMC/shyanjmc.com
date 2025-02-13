@@ -127,6 +127,8 @@ Date: [Timestamp]
    [comentario/mensaje_del_cambio]
 ```
 
+Cada [commit_ID] es calculado utilizando SHA.
+
 Si queremos ver el estado actual del proyecto (archivos modificados pero sin registro
 del cambio, archivos sin seguimiento, etc) con;
 
@@ -179,7 +181,7 @@ dos posibles opciones;
 
 > git checkout master 
 
-> git rebase \-\continue Hotfix1
+> git rebase \-\-continue Hotfix1
 
 **Personalmente no te recomiendo que uses NUNCA rebase, como te dije, elimina el branch que estas unificando en el que estas parado.
 Esa eliminación incluye el registro de cambios.**
@@ -222,3 +224,145 @@ Esa eliminación incluye el registro de cambios.**
 1. Open source - Self Hosted - Third Party; [GiTea](https://about.gitea.com/)
 
 ### Mercurial
+
+Desarrollado Matt Mackall en el 2005, tiene la finalidad de ser fácil de usar al igual
+que tener un gran rendimiento y escalabilidad. A diferencia de "git" trae un servidor web integrado
+y no tiene la necesidad de un servidor central si no que puede funcionar a modo distribuido.
+
+#### Uso
+
+Como vimos en el capitulo anterior según la distribución que estés usando, instala "mercurial".
+
+Luego debemos elegir que carpeta / directorio (y lo que contenga) queremos que haga seguimiento mercurial.
+Una vez en la misma (recuerda, el comando "cd") vamos a iniciar todo;
+
+> hg init 
+
+Luego añadimos que directorios y archivos son los que queremos que haga un seguimiento;
+
+> hg add [directorio] [archivo]
+
+Registramos este cambio con un mensaje indicando el mismo;
+
+> hg commit -m "[mensaje]"
+
+Luego creamos una ramificación;
+
+> hg branch [nombre_de_la_rama]
+
+Nos movemos a esa rama, u otra que necesitemos;
+
+> hg update [nombre_de_la_rama]
+
+Podemos verificar que ramas existen y en cual estamos (estará resaltada en color);
+
+> hg branches
+
+Hacemos las modificaciones que necesitemos en los archivos y luego los registramos
+con "git add" y el "git commit".
+
+Podemos verificar el registro de cambio, **que sera independiente de la rama en donde estemos** con;
+
+> hg log -G -v
+
+El retorno de "hg log -G -v" tiene esta estructura;
+
+```bash
+changeset: [commit_ID]
+user: [Author: Nombre, Apellido y email]
+date: [Timestamp]
+summary: [comentario/mensaje_del_cambio]
+```
+
+Cada [commit_ID] es calculado utilizando SHA.
+
+Si queremos ver el estado actual del proyecto (archivos modificados pero sin registro
+del cambio, archivos sin seguimiento, etc) con;
+
+> hg status
+
+Por ultimo, debemos verificar cual repositorio remoto es al que vamos a subir este proyecto, sus
+archivos, su registro git y sus cambios;
+
+> hg paths
+
+El retorno de "hg paths" tiene esta estructura;
+
+```
+[nombre_del_repositorio] [url_remota]
+```
+
+Una vez identificado donde tenemos que subir todo procedemos a indicar el mismo y el branch donde se va aplicar los cambios;
+
+> hg push [nombre_del_repositorio] -b [branch] 
+
+Dependiendo de la autenticación configurada, nos pedirá nuestro usuario y contraseña/token o nuestra clave de la llave ssh.
+
+Si tenemos un repositorio remoto ya existente y necesitamos sincronizar los cambios localmente (el argumento "--all" traerá todos los branch, no solamente en el que estas);
+
+> hg pull --all && hg update
+
+O si directamente queremos clonar ese repositorio de forma local lo podemos hacer con;
+
+> hg clone [url_repositorio] [path_local_a_donde_guardar]
+
+Por ultimo, si queremos unificar una rama con la base (u otra rama) lo podemos hacer. Primero 
+tenemos que ir al branch que queremos que se unifique todo (recordar; "git checkout [branch]") y luego tenemos
+dos posibles opciones;
+
+1. Si queremos que se unifiquen los cambios en una rama pero sin eliminarla y preservando todos los registros anteriores;
+
+> hg merge [branch_a_unificar_en_la_que_estamos]
+
+   De esta manera si nos movemos (checkout) a la rama "Hotfix1" y queremos que esos cambios se apliquen en la master;
+
+> hg update master 
+
+> hg merge Hotfix1
+
+2. Si queremos que se unifiquen los cambios en una rama, eliminando la luego y unificando los cambios;
+
+> hg rebase -s [origen] -d [destino]
+
+   De esta manera si queremos que los cambios de la rama "Hotfix1" se apliquen en la master;
+
+> hg rebase -s Hotfix1 -d master
+
+**Personalmente no te recomiendo que uses NUNCA rebase, como te dije, elimina el branch que estas unificando en el que estas parado.
+Esa eliminación incluye el registro de cambios.**
+
+#### Recomendaciones / Buenas practicas
+
+Básicamente lo mismo que para git;
+
+1. No hagas cambios en "master" o "main". Crea siempre tus branchs.
+2. Registra cambios chicos por archivo, trata de no hacer millones de cambios en uno o varios archivos y registrarlos en un solo commit.
+3. Cada commit debe corresponder a una acción atómica; una actualización, una solución de un problema, etc.
+4. No hagas "rebase" entre los branchs.
+5. Los mensajes de los cambios deben ser descriptivos y bien explicados.
+6. Seguí la estrategia de ramificaciones ("branching") que mejor sea para el proyecto;
+
+   - Feature branching
+
+     Cada feature/característica que se añade al programa conlleva un nuevo branch. Nunca se fusionan a "main" o "master".
+
+   - GitFlow
+
+     Aplica el "feature branching" pero con modificaciones considerables; se parte de un branch "develop" o "dev". Ahí se
+     crea un branch por cada feature creada, que luego se fusionan (con "merge" obviamente) al de "dev". Cuando el programa
+     y sus cambios son estables se aplican otro merge / fusión pero en un branch llamado "release". Cuando el programa en el 
+     branch "release" pasa las pruebas de calidad ("QA") ahí se hace otra fusión en "main" o "master".
+
+     La imagen que puse en "Arquitectura" de Git corresponde a esta estrategia.
+
+   - Personal branching
+
+     Acá cada desarrollador usa su propio branch y cada uno fusiona a "main" o "master".
+
+   Mientras que algunos equipos usan un flujo de trabajo especifico, muchos otros adaptan los anteriores a sus necesidades.
+
+   Personalmente he usado tanto "GitFlow" como "Personal branching" y hasta una combinación de ambos.
+
+#### Plataformas / Implementaciones
+
+1. Open source - Self Hosted - Third Party; [Heptapod](https://foss.heptapod.net/heptapod/heptapod)
