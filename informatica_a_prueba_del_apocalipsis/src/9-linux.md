@@ -27,7 +27,7 @@ regla es que el código fuente esté disponible, y como segunda regla que se man
 Entre los componentes que Stallman y su equipo han desarrollado con el tiempo están; el compilador GCC, el editor de texto Emacs, el set 
 coreutils (ls, cp, dd, dir, mkdir, etc), el automatizador de construcción "make", entre muchos otros.
 
-Sin embargo, escribir un sistema operativo al completo es muy dificil y el proyecto GNU tenía una estructura de micro servidores (al igual 
+Sin embargo, escribir un sistema operativo al completo es muy difícil y el proyecto GNU tenía una estructura de micro servidores (al igual 
 que la filosofía del sistema Unix; un programa hace una sola tarea y la hace bien) por lo que en un momento les faltaba el componente más importante
 de todos; el kernel. Y ahí es donde entra nuestro segundo protagonista; Linus Torvalds.
 
@@ -40,7 +40,7 @@ un Intel 80386. Luego de conseguir el libro "Sistemas Operativos; diseño e impl
 su tesis de grado, llamada; "Linux: Un sistema operativo portable".
 
 Una vez que el kernel Linux se empezó a distribuir con el software de GNU para tener un sistema en conjunto utilizable se empezó 
-un camino de evolución, desarrollo y adaptaciones que hoy en día es dificil de determinar que depará el futuro.
+un camino de evolución, desarrollo y adaptaciones que hoy en día es difícil de determinar que depara el futuro.
 
 ## Arquitectura
 
@@ -66,8 +66,8 @@ Por lo tanto acá hablaremos del software básico y estructura para que el siste
   | /dev  | - | Abreviatura de "devices". Almacena en archivos y carpetas todos los dispositivos físicos y virtuales que halla reconocido el kernel. Los archivos con la información del hardware reconocido los crea programas como; mdev, udev, eudev, etc. |
   | /etc  | - | Almacena los archivos de configuración de los programas. |
   | /home | - | Almacena los archivos y carpetas de cada usuario no root (administrador) en subcarpetas con los nombres de esos usuarios (ejemplo; /home/pepe, /home/luis, etc). |
-  | /lib | /usr/lib | Almacena todas las librerias utilizadas por otros programas (llamadas; "shared object" con extensión ".so") para determinadas funcionalidades. |
-  | /lib64 | /usr/lib | Idem a /lib pero con librerías de 64 bits. |
+  | /lib | /usr/lib | Almacena todas las librerías utilizadas por otros programas (llamadas; "shared object" con extensión ".so") para determinadas funcionalidades. |
+  | /lib64 | /usr/lib | Ídem a /lib pero con librerías de 64 bits. |
   | /mnt | - | Abreviatura de "mount". Almacena en subdirectorios todos los puntos de montaje de dispositivos de almacenamiento externos (como pendrives) para su uso. |
   | /opt | - | No siempre se usa/existe, pero es una vieja convención de uso de los Unix de AT&T, Sun y DEC para almacenar los programas que no son parte del sistema base. |
   | /proc | - | Abreviatura de "processes". Almacena en archivos toda la información de los procesos en funcionamiento así como muchos módulos cargados. Los procesos se encuentran separados por número de proceso. |
@@ -98,7 +98,7 @@ Por lo tanto acá hablaremos del software básico y estructura para que el siste
   separados para solamente cargar los cuando se los necesite. Generalmente los módulos (tanto en Linux como en MacOS y los BSD) tienen
   por extensión ".ko" (kernel object).
 
-  Los módulos del kernel linux se almacenan en;
+  Los módulos del kernel Linux se almacenan en;
 
   > /lib/modules/[kernel_version]
 
@@ -122,7 +122,7 @@ Por lo tanto acá hablaremos del software básico y estructura para que el siste
 
   En Linux tenemos; MUSL (minimalista y rápido), GLibC (trata de implementar todos los estándares relevantes de C) y uClibc (optimizado para sistemas embebidos).
 
-  Además la librería estándar viene a implementar una segunda ventaja a raiz de la abstracción que da; si en dos sistemas diferentes, se respeta y utiliza
+  Además la librería estándar viene a implementar una segunda ventaja a raíz de la abstracción que da; si en dos sistemas diferentes, se respeta y utiliza
   el mismo estándar del lenguaje C/C++ a la hora de programar o de realizar cosas, entonces muy probablemente el código fuente sea portable entre esos sistemas.
   Esto es la razón de que muchas aplicaciones tengan muchísimo nivel de compatibilidad entre sistemas como Linux o BSD, o que inclusive entre diferentes
   sistemas BSD (FreeBSD, OpenBSD, etc) la compatibilidad se mantenga alta.
@@ -163,14 +163,14 @@ Por lo tanto acá hablaremos del software básico y estructura para que el siste
 
     Es un conjunto de daemons, bibliotecas y herramientas. SystemD es tan grande que creó un montón de discusiones a lo largo y ancho
     de la red; no respeta la filosofía Unix de KISS ("Keep It Simple Stupid") en hacer una cosa y hacerla bien, superando por mucho 
-    las responsabilidades básicas de un sysinit.
+    las responsabilidades básicas de un Sysinit.
 
     Lennart lo describe no solamente como un administrador de sistema y servicios, si no también como una plataforma de desarrollo 
     de software y de conexión entre las aplicaciones y el núcleo Linux.
 
     A nivel de capacidades, SystemD expande un poco más lo que ya ofrece OpenRC y le añade los "sockets"; un socket de tipo Unix
-    corresponde a la capacidad de que un programa le envie información a ese archivo (ubicados en; /run) en formato binario, cuando
-    SystemD detecta esto ejecuta ese programa pasandole esa información recibida y luego lo finaliza. Esto da la ventaja de que 
+    corresponde a la capacidad de que un programa le envíe información a ese archivo (ubicados en; /run) en formato binario, cuando
+    SystemD detecta esto ejecuta ese programa pasándole esa información recibida y luego lo finaliza. Esto da la ventaja de que 
     el programa objetivo no tiene que estar en ejecución todo el tiempo, solamente cuando sea necesario.
 
     Cabe aclarar que los sockets de tipo Unix no son nuevos o vinieron con SystemD, pero sí fueron implementados en el init 
@@ -191,7 +191,7 @@ Por lo tanto acá hablaremos del software básico y estructura para que el siste
   Por poner pocos ejemplos, Alpine Linux utiliza el userland de BusyBox con el gestor de paquetes "apk" mientras que Arch Linux
   utiliza el userland de GNU llamado "coreutils" con el gestor de paquetes "pacman" y la shell (el programa para ejecutar comandos)"bash".
 
-- Gestor de paqueteria
+- Gestor de paquetería
 
   Pocos sistemas operativos sirven si no tienen la capacidad de instalar programas adicionales.
 
@@ -204,6 +204,17 @@ Por lo tanto acá hablaremos del software básico y estructura para que el siste
   | Arch (Endeavour, Manjaro, etc)| pacman |
   | Alpine | apk |
   | Gentooo (Funtoo, Pentoo) | portage |
+
+- Gestión de permisos
+
+  En ningún sistema operativo todo se realiza con un solo usuario. Las tareas se dividen en administrativas (que tienen capacidad
+  de modificar el sistema y su configuración), y las no administrativas. De ahí que el usuario con capacidades de modificar el sistema operativo
+  es llamado "admin" o "root", y el resto (que no tienen esos permisos) tienen nombres propios.
+
+  En Linux y BSD podemos pasar a "root" (el usuario administrador) con el programa; "su". También existen otros programas
+  que permiten que ejecutemos un comando especifico con permisos de admin como; "sudo" y "doas".
+
+  Por supuesto, instalar, actualizar y/o desinstalar programas requiere permisos de administrador.
 
 ## Uso
 
@@ -255,6 +266,9 @@ Como se puede evidenciar superiormente;
 
 Dependiendo del programa podemos tener desde unos pocos, hasta cientos de argumentos que usar para modificar el comportamiento del programa y lo que nos devuelve.
 
+En una gran cantidad de sistemas (no solo Linux) tenemos el comando "cd" (de; change directory). El comando lo que hace es cambiar el directorio
+en donde estamos actualmente.
+
 ### Tipos de argumento
 
 En todos los sistemas donde puedas insertar comandos tenes dos tipos de argumentos;
@@ -264,9 +278,9 @@ En todos los sistemas donde puedas insertar comandos tenes dos tipos de argument
   Este tipo de argumento permite modificar como va a tratar la información externa que recibe. Pueden combinarse.
 
   Siguiendo con el comando "ls", si le pasas el argumento "-l" entonces el listado de archivos y directorios lo mostrará en un formato de "lista" 
-  indicando el sistema de permisos, la fecha de modificación, el propietario, el grupo y el peso el bits. Si añadis el argumento "-h" entonces
+  indicando el sistema de permisos, la fecha de modificación, el propietario, el grupo y el peso el bits. Si añadís el argumento "-h" entonces
   el peso en bits se mostrará en un formato de kilobytes, megabytes, etc por lo que debe usarse en conjunto con "-l". Y, como último ejemplo,
-  si añadis el argumento "-a" mostrará además los directorios y archivos que están ocultos (que tienen delante de su nombre un punto; ".").
+  si añadís el argumento "-a" mostrará además los directorios y archivos que están ocultos (que tienen delante de su nombre un punto; ".").
 
   Acá ejemplos;
 
@@ -295,14 +309,14 @@ En todos los sistemas donde puedas insertar comandos tenes dos tipos de argument
 Cuando vos indicas un comando por terminal, sea con argumentos o no, estás ejecutando un programa que puede estar en una determinada ubicación.
 Por ende, no todos los sistemas tienen los mismos programas (y por ende comandos). 
 
-Entonces, entendiendo que lo que estás haciendo es ejecutar progrmas con determinadas opciones, tenes que tener siempre en consideración que el programa "X" al 
+Entonces, entendiendo que lo que estás haciendo es ejecutar programas con determinadas opciones, tenes que tener siempre en consideración que el programa "X" al 
 que estás acostumbrado a ejecutar siempre para hacer una determinada tarea no necesariamente va a estar en un Alpine, Rocky, RedHat, Debian o la distro que sea. Esto 
-pasa mucho con los editores de texto por terminal; nano, micro y neovim no suelen venir instalados en los linux empresariales como SUSE, RedHat, Rocky, etc.
+pasa mucho con los editores de texto por terminal; nano, micro y neovim no suelen venir instalados en los Linux empresariales como SUSE, RedHat, Rocky, etc.
 
 Personalmente siempre recomiendo que se acostumbren al estándar de facto en la mayoría de las distribuciones Linux; coreutils. El cual es un paquete que trae
 montones de programas para realizar las funcionalidades básicas en todo sistema operativo.
 
-Como vimos en la parte de "Arquitectura" según la distribución que se esté usando, el gestor de paquetes será uno u otro. Y también si tenés o no permisos de "root" para
+Como vimos en la parte de "Arquitectura" según la distribución que se esté usando, el gestor de paquetes será uno u otro. Y también si tenes o no permisos de "root" para
 poder instalar o desinstalar programas.
 
 #### Comandos básicos
@@ -357,7 +371,7 @@ poder instalar o desinstalar programas.
 
 > [X] | [Z]
 
-   Esto se usa mucho para pasar información entre programas y automatizar ciertos procesos. Dependiendo de la shell que se esté usando coportará tantos pipelines ( el símbolo; "|"), bash soporta cinco (5).
+   Esto se usa mucho para pasar información entre programas y automatizar ciertos procesos. Dependiendo de la shell que se esté usando soportara tantos pipelines ( el símbolo; "|"), bash soporta cinco (5).
 
    Por ejemplo; ejecuto el comando "find" para encontrar un archivo y con el pipeline se lo paso a "cat" o "grep" para mostrar o buscar dentro de él.
 
@@ -394,12 +408,12 @@ poder instalar o desinstalar programas.
 #### Administración del sistema operativo
 
 No todos los sysinits tienen los mismos comandos ni las mismas funcionalidades (principalmente SystemD que es gigante en funcionalidades).
-Por eso mismo acá te dejo una tabla comparativa entre OpenRC, SysVInit y SystemD:
+Por eso mismo acá te dejo una tabla comparativa entre OpenRC, SysVinit y SystemD:
 
-| Característica                  | SysVInit                           | OpenRC                              | SystemD                              |
+| Característica                  | SysVinit                           | OpenRC                              | SystemD                              |
 |--------------------------------|-----------------------------------|-------------------------------------|--------------------------------------|
 | **Modelo de funcionamiento**   | Basado en scripts init             | Basado en scripts init + OpenRC     | Basado en unidades (unit files)      |
-| **Velocidad de arranque**      | Lenta                          | Más rápida que SysVInit con inicio paralelo | Muy rápida (inicio paralelo)         |
+| **Velocidad de arranque**      | Lenta                          | Más rápida que SysVinit con inicio paralelo | Muy rápida (inicio paralelo)         |
 | **Paralelismo**                | No                                | Sí                                  | Sí                                   |
 | **Comandos principales**       | `service`                         | `rc-service`                        | `systemctl`                          |
 | **Inicio de servicios**        | `/etc/init.d/<servicio> start`    | `rc-service <servicio> start`       | `systemctl start <servicio>`         |
@@ -417,7 +431,7 @@ Por eso mismo acá te dejo una tabla comparativa entre OpenRC, SysVInit y System
 | **Manejo de targets/niveles**  | `/etc/inittab` (runlevels)        | `/etc/rc.conf` (runlevels)          | Targets (`systemctl isolate <target>`) |
 | **Gestión de dependencias**    | Manual                            | Semi-automática (mediante OpenRC)   | Totalmente automática                |
 | **Arranque interactivo**       | `single` en línea de comandos     | `rc_single`                         | `systemctl rescue`                   |
-| **Compatibilidad**             | Scripts tradicionales de SysVInit | Compatible con SysVInit             | Parcialmente compatible con SysVInit |
+| **Compatibilidad**             | Scripts tradicionales de SysVinit | Compatible con SysVinit             | Parcialmente compatible con SysVinit |
 | **Soporte de sockets**         | No                                | Parcial                             | Sí                                   |
 | **Implementación**             | Simple y ligera                   | Ligera                              | Compleja y más pesada                |
 | **Uso típico**                 | Sistemas minimalistas o antiguos  | Sistemas orientados a BSD/Linux     | Distribuciones modernas              |
@@ -433,7 +447,7 @@ Por eso, al Cesar lo que es del Cesar, te dejo acá una web en inglés con excel
 
 ## Seguridad estratégica
 
-La seguridad en los sistemas Linux es un tema ampliamente discutido. Abordaremos en este capítulo el tema desde una perpectiva estratégica, para luego en el capítulo "Seguridad" hacerlo desde la operacional y táctica;
+La seguridad en los sistemas Linux es un tema ampliamente discutido. Abordaremos en este capítulo el tema desde una perspectiva estratégica, para luego en el capítulo "Seguridad" hacerlo desde la operacional y táctica;
 
 1. Distribución
 
@@ -471,7 +485,7 @@ La seguridad en los sistemas Linux es un tema ampliamente discutido. Abordaremos
    | :---: | :---: |
    | Arch Linux | General |
    | Alpine Linux | General |
-   | Manajro Linux | General |
+   | Manjaro Linux | General |
    | Kali Linux | Pentesting |
    | Parrot Linux | Pentesting |
    | Rhino Linux | General |
@@ -506,7 +520,7 @@ La seguridad en los sistemas Linux es un tema ampliamente discutido. Abordaremos
 
      Que el kernel Linux pueda iniciar y arrancar en una determinada arquitectura no quiere decir que tiene que soportar todos los dispositivos que le conectes a posteriori.
 
-     Por ejemplo; según el fabricante del procesador ARM o RISC-V que utilices, puede ser que tenga (o no) el conjunto de instrucciones necesario para poder arrancar una placa de video
+     Por ejemplo; según el fabricante del procesador ARM o RISC-V que utilices, puede ser que tenga (o no) el conjunto de instrucciones necesario para poder arrancar una placa de vídeo
      externa dedicada como una NVIDIA. Hasta ahora, y en mi conocimiento, el único fabricante de ARM que soporta dGPU (dedicated Graphic Process Unit) es Ampere.
 
      Además debemos considerar siempre que en ARM y RISC-V cada fabricante determina el proceso de booteo por si mismo, por lo que la distribución que elijamos tiene que tener 
