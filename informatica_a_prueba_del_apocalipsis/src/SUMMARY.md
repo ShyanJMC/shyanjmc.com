@@ -10,6 +10,7 @@
 - [Documentación](./8-docu.md)
 - [Sistemas Operativos Linux](./9-linux.md)
 - [Sistemas Operativos BSD](./10-BSD.md)
+- [Compilación](./compilacion.md)
 - [Bibliotecas estándar](./11-glibc_musl.md)
 - [Repositorios de software](./12-repositorios.md)
 - [Repositorios de código](./13-repositorios_codigo.md)
