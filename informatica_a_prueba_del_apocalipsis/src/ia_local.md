@@ -40,6 +40,10 @@ Como tal, cada peso y sesgo deben guardar su valor en un lugar, en los lenguajes
 variables. Y como tal pueden ser mutables o inmutables al momento de ser liberado el modelo al público, generalmente suelen 
 ser inmutables para que la gente no los modifique.
 
+| Nota |
+| :---: |
+| No confundir un valor "cero" con "nulo" (NULL). El valor 0 (cero) es un entero que pesa en memoria, mientras que NULL es realmente vacio. Por lo que aunque el peso o sesgo/bias sea cero, igualmente ocupará espacio en memoria. |
+
 Las variables tienen valores máximos que pueden almacenar según cuantos bits se estén usando para almacenar en memoria
 el dato. Por eso mismo, generalmente para que los modelos de IA tengan una muy buena precisión se usan variables F32 (float 32 bits)
 y es por ese motivo que cuando las mismas son muy pesadas para ser ejecutadas en una computadora sin mucha potencia, se puede realizar
@@ -49,6 +53,11 @@ todos necesitan obligatoriamente una GPU para hacer el proceso.
 
 A F32 le decimos "full precision", a F16 "half precision" y a INT8 "integer representation". Mayormente todos los procesos de quantificación solo llegan
 hasta INT8, salvo algunos como "bitsandbytes" que logra llegar hasta INT4. 
+
+Existe un método de optimización llamado "pruning"; se evaluan en las capas los pesos que conectan unas neuronas con otras a fin
+de detectar las más débiles o insignificantes en valor. Esto lo que hace es detectar que ese camino es tan improbable 
+de ser usado que no se considere eficiente mantenerlo, luego se elimina tal peso entre las dos neuronas involucradas. De esta manera
+se aligera el modelo y se vuelve más eficiente.
 
 Existen las llamadas 'bitnets' las cuales son redes neuronales en donde las variables tienen solamente 1 bit de almacenamiento (-1, 0 ó 1).
 Desde 2022 (cuando empecé a escribir este libro), hasta el momento en que estoy escribiendo estas líneas (enero 2025), no paro de ver
@@ -178,7 +187,7 @@ Al tipo de red neuronal se le llama; modelo y hay varios tipos:
   Son algo cercano a como evoluciona un ser vivo en la naturaleza; por mera aleatoridad se da una mejor optimización
   a un problema y esa logra sobrevivir.
 
-### Organización - Arquitectura
+### Organización/Arquitectura por capas
 
 | Capas de una red |
 | :---: |
@@ -193,6 +202,8 @@ envia el resultado a la siguiente capa. Finalmente aplica una función de activa
 Las neuronas están organizadas en capas, y las conexiones entre capas (conocidas como sinapsis) están 
 definidas por estos parámetros (pesos y sesgos). Cada capa de neuronas recibe la salida de la capa anterior 
 y la envía a la siguiente, permitiendo que la red aprenda representaciones complejas a medida que avanza.
+
+Recordá que si se hace "pruning" tales conexiones más débiles entre capas se eliminarán.
 
 Pero puede pasar que en el medio de su procesamiento, haga relaciones entre conceptos que no son correctos, 
 en los humanos diriamos que se 'confundió' mientras que en este contexto lo llamamos 'alucinación'. La diferencia
@@ -217,6 +228,86 @@ Esto se complementa con un mecanismo complementario, denominado 'Auxiliary-Loss-
 que permite al modelo organizar de forma automática y eficiente el trabajo de cada 'experto', asegurándose 
 de que todas contribuyan en su justa medida, sin necesidad de procesos extras.
 
+#### Tipos de capas
+
+Según el tipo de capa que se use, el modelo tendrá una u otra capacidad de procesamiento. No necesariamente
+el modelo tiene que tener un solo tipo, puede tener muchas en funcionamiento:
+
+- **Capas completamente conectadas**
+
+  Cada neurona de la capa se conecta a **todas** las salidas de la capa anterior. Es la 
+  “tradicional” en ANN (Artificial Neural Network), muy usada en la parte final de CNN para clasificación.
+
+- **Capas de activación** (ReLU, Sigmoid, Tanh…)
+
+  Transforman la salida lineal de cada neurona en una no linealidad, p.ej. **ReLU** (Rectified Linear Unit), **Sigmoid**, **Tanh**.
+  Estas funciones permiten a la red aprender relaciones complejas.
+
+- **Capas de convolución**
+
+  Aplica filtros locales (kernels) deslizantes para extraer características espaciales (bordes, texturas…) 
+  en datos con **estructura de grilla** (imágenes, espectrogramas).
+  
+- **Capas de pooling** (Max-Pooling, Average-Pooling)
+
+  Reducción de dimensión que mantiene características más relevantes:
+  
+  - **Max-Pooling**: toma el valor máximo en cada región.
+  - **Average-Pooling**: valor medio.
+  
+    Permiten invariancia a pequeñas traslaciones y reducen cómputo. ([Wikipedia, la enciclopedia libre][1])
+
+- **Capas de normalización/estabilización** (Batch Normalization, Layer Normalization)
+
+  - Batch Normslization
+
+    Re-centra y re-escala las activaciones de cada mini-batch para acelerar y estabilizar 
+    el entrenamiento, reduciendo el “internal covariate shift”.
+    
+  - Layer Normalization
+
+    Versión que normaliza a nivel de muestra en lugar de mini-batch, útil en RNNs y Transformers.
+
+- **Capas de regularización** (Dropout)
+
+  Elimina aleatoriamente (“apagando”) neuronas durante el entrenamiento para evitar sobreajuste 
+  y forzar redundancia en la representación. 
+  
+- **Capas recurrentes** (Simple RNN, LSTM, GRU)
+
+  Son capas especializadas en secuencias y grafos. Procesan datos secuenciales (texto, audio):
+  
+  * **RNN simple** (vanilla)
+  * **LSTM** (Long Short-Term Memory) preserva información a largo plazo
+  * **GRU** (Gated Recurrent Unit) variante más ligera.
+  
+  Capas de grafos (Graph Convolutional)
+  
+  
+
+- **Capas de incrustación (Embedding)**
+
+  Mapea entradas discretas (palabras, ítems) a vectores densos de dimensión continua, esencial 
+  en redes de recomendación y NLP.
+  
+- **Capas de atención (Attention)**
+
+  Asigna pesos dinámicos a diferentes posiciones de la entrada, permitiendo al modelo enfocarse 
+  en partes relevantes sin importar su posición. Fundamental en Transformers.
+  
+- **Bloques Transformer** (encoders/decoders con atención multi-cabeza)
+
+  Conjuntos de capas de **self-attention** multi-cabeza y feed-forward que han revolucionado NLP 
+  y visión por su escalabilidad y paralelismo.
+  
+- **Capas de grafos** (Graph Convolutional)
+
+  Extienden la convolución a **grafos**, aplicando filtros a nodos vecinos para datos no euclidianos (redes sociales, moléculas).
+
+- **Conexiones residuales / skip-connections** (ResNet) que ayudan a entrenar redes muy profundas.
+- **Capas de flatten** (aplanar) para conectar convolucionales con densas.
+
+
 ## Machine Learning (ML)
 
 Es un subcampo dentro de la IA. Busca la creación, optimmización y depuración de algoritmos estadísticos que
@@ -231,7 +322,8 @@ para cualquier cosa que se pueda usar como dato de entrada y codificado.**
 Es un subcampo dentro del ML. Es el eslabón más profundo dentro de la ejecución de una red neuronal, ya que se enfoca
 en las neuronas y como aprenden mediante; clasificaciones, regresiones y representaciones de la información introducida. 
 
-'Deep' viene de las varias capas creadas en la red neuronal.
+'Deep' viene de las varias capas creadas en la red neuronal, haciendo que no sea una capa la que aprenda si no el 
+conjunto que conforman el modelo de inteligencia artificial.
 
 Tenemos varios métodos de entrenamiento de la red, aunque debemos tener en cuenta que no son las únicas formas;
 
@@ -454,6 +546,9 @@ Debemos entender algunos conceptos adicionales que aplican a todos los tipos de 
 
   Una época es una iteración completa sobre el conjunto de datos ('dataset'). A varias épocas y una menor tasa de aprendizaje, mejor precisión.
 
+Recordá que siempre se puede hacer "pruning": detectar los pesos y bias más insignificantes, para luego eliminarlos y liberar
+espacio de memoria.
+
 ### Retrieval-Augmented Generation (RAG)
 
 Los modelos lingüísticos se limitan a proporcionar respuestas basadas en sus datos de entrenamiento. Esto se debe a que no han sido 
@@ -463,18 +558,42 @@ una fecha de corte, lo que limita su capacidad para proporcionar respuestas actu
 La generación mejorada por recuperación es un proceso en el que grandes modelos lingüísticos como GPT-4o adquieren integraciones del contexto 
 utilizando fuentes de datos externas. Es una combinación de un recuperador y un generador. El recuperador obtiene datos de Internet o de una 
 base de datos vectorial (publica o privada) y se los proporciona al generador junto con la consulta original del usuario. El generador utiliza el contexto adicional 
-para generar una respuesta muy precisa y pertinente.  
+para generar una respuesta muy precisa y pertinente.
+
+En algunos sistemas RAG se usa un modelo de embeddings para encontrar los documentos más relevantes. Pero en todos los casos el
+uso del RAG reduce las alucinaciones (respuestas inventadas).
 
 El proceso consta de estos pasos simplificados;
 
 1. El usuario indica lo que quiere o necesita
-1. El RAG interpreta la introducción del usuario/a
-1. Con la información interpretada, se conecta a internet o la base de datos para buscar información en distintos lugares sobre esos conceptos.
+1. El motor de inferencia (de ejecución) interpreta la introducción del usuario/a
+1. Con la información interpretada, se conecta al RAG solicitando más información sobre un tópico y tema determinado.
+1. El RAG se conecta internet o la base de datos para buscar información en distintos lugares sobre esos conceptos.
 1. Con la información adicional obtenida de distintas fuentes, se inserta en conjunto con lo que solicitó el usuario/a y se pasa al modelo.
 1. El modelo interpreta toda la información y devuelve una salida.
 
-En algunos sistemas RAG se usa un modelo de embeddings para encontrar los documentos más relevantes. Pero en todos los casos el
-uso del RAG reduce las alucinaciones (respuestas inventadas).
+Es muy común que el RAG sea tan "simple" como un programa que tiene indexado un montón de texto (de copias locales de
+Wikipedia, documentos, etc) y que al devolver la información al motor de inferancia lo que se pasa al modelo tenga 
+un formato muy parecido a este;
+
+```text
+Con esta información en consideración:
+
+[INFORMACIÓN_QUE_RETORNÓ_EL_RAG]
+
+Cumplí esta petición del usuario/a de forma clara y precisa:
+
+[PETICIÓN_DEL_USUARIO]
+```
+
+Obviamente considerá que esto aumenta enormemente los tokens usados por el modelo.
+
+Te dejo esto para que pienses; si el modelo simplemente toma como input lo que le da el motor de inferancia,
+no tiene una "memoria de situación interna", entonces; ¿no sería, por ende, el historial de conversación
+y de contexto un RAG en tiempo real de la interacción histórica entre vos y ese modelo?
+
+Por lo anterior es que un motor optimizado debería realizar un resumen de todo lo conversado a partir de cierto
+punto para reducir drásticamente la cantidad de tokens usados en mantener el contexto e historial.
 
 ### Fine tuning
 
@@ -660,81 +779,7 @@ para cumplir esa relación y dar la salida apropiada. Esto es lo que permite que
 "más o menos" una coherencia de salida.
 
 Por eso mismo, si cuando interactuas con ChatGPT, Gemini, DeepSeek, Llama, etc especificas (primero) la instrucción y luego el pedido con la información, el resultado
-es mucho mejor. Ya que le permite al modelo realizar mejores y más precisas relaciones entre los datos. Aca un ejemplo con mi cuenta de ChatGPT Plus;
-
-```
-Yo;
-
-Hola ChatGPT
-Analiza la relación entre los datos que te voy a pasar y dame una explicación 
-plausible de por que los datos pueden estar, o no, relacionados.
-
-1. Aumento de la calidad de vida y nivel económico de los países nórdicos 
-al encontrar petroleo en el mar del norte
-
-2. Aumento del poder blando de Noruega e Inglaterra en el mundo a través 
-de la influencia en distintos estratos de la sociedad al rededor del mundo
-
-=================================================================================
-ChatGPT;
-
-La relación entre los dos puntos que mencionas puede explicarse a través de una 
-serie de 
-efectos económicos, políticos y estratégicos derivados 
-del descubrimiento y explotación del petróleo en el Mar del Norte.
-
-### **1. Aumento de la calidad de vida y nivel económico en los países nórdicos 
-tras el hallazgo de petróleo**
-
-Cuando Noruega descubrió petróleo en el Mar del Norte en los años 60 y 70, 
-el país implementó políticas económicas que permitieron la creación del 
-**Fondo de Pensiones del Gobierno de Noruega**, el cual invierte en mercados 
-internacionales y actúa como un colchón financiero para el país. Esto generó:
-
-   - **Mayor inversión en infraestructura y bienestar social**, con educación y 
-   salud gratuitas o de bajo costo.
-   
-   - **Alta calidad de vida** debido a políticas redistributivas y sostenibles.
-   
-   - **Diversificación económica**, ya que Noruega ha tratado de no depender 
-   solo del petróleo, sino también de energías renovables y tecnologías avanzadas.
-
-Reino Unido también explotó petróleo en el Mar del Norte, pero su modelo de 
-gestión fue más privatizado, por lo que los efectos en calidad de vida fueron 
-menos evidentes en comparación con Noruega. Sin embargo, sí tuvo un impacto 
-positivo en la economía británica, especialmente en los años 80 y 90.
-
-### **2. Aumento del poder blando de Noruega e Inglaterra en el mundo**
-El poder blando (soft power) se refiere a la capacidad de un país para influir 
-en otros a través de la cultura, la diplomacia, la ayuda internacional y otros
-medios no coercitivos. La riqueza petrolera permitió a Noruega e Inglaterra 
-incrementar su influencia global de varias formas:
-
-- **Noruega como mediador internacional**
-
-Gracias a sus ingresos petroleros, Noruega ha financiado esfuerzos de paz y 
-desarrollo en varias partes del mundo (como el Proceso de Paz en Colombia, 
-Sudán y Medio Oriente), lo que ha reforzado su reputación internacional.
-
-- **Inversión en cultura y educación**: Noruega y Reino Unido han impulsado 
-becas, universidades y proyectos culturales que refuerzan su presencia en la 
-educación y en la formación de elites extranjeras.
-
-- **Inglaterra como centro financiero y cultural**: Londres ya era un centro 
-financiero global, pero la estabilidad económica proveniente del petróleo 
-ayudó a fortalecer esta posición, atrayendo inversión extranjera y 
-manteniendo la influencia británica en negocios y política global.
-
-### **Conclusión: ¿Están relacionados?**
-Sí, ambos fenómenos están relacionados, aunque no de manera directa 
-y exclusiva. La riqueza generada por el petróleo brindó a Noruega y a 
-Reino Unido **herramientas económicas y estratégicas** que les 
-permitieron fortalecer su presencia en el mundo mediante inversión en 
-diplomacia, educación, cultura y ayuda internacional. En el caso de 
-Noruega, el modelo de administración de los recursos petroleros 
-fue clave para que pudiera desarrollar un fuerte poder blando a 
-nivel global.
-```
+es mucho mejor. Ya que le permite al modelo realizar mejores y más precisas relaciones entre los datos. 
 
 Ahora algo a recordar, y que lo pondré con mayúsculas en negrita para que no se te olvide, por que es realmente muy importante;
 
@@ -795,6 +840,18 @@ para que el formato sea;
 	}
 ]
 ```
+
+#### Dataset para Gemma
+
+Si sos como yo, y te gusta la familia de modelos Gemma de Google ([https://ai.google.dev/gemma](https://ai.google.dev/gemma)) 
+debes tener en cuenta que podes tener mejores resultados si utilizas el siguiente formato JSONL;
+
+```json
+{"text": "### Human: [SOLICITUD_USUARIO/A]\n\nContexto relevante:\n[CONTEXTO_RAG].\n\n### Assistant: [SALIDA_MODELO]"}
+```
+
+Tal formato es para texto e indica mediante los "### Human:" y "### Assistant" los inputs y outputs en una sola línea.
+No le des otro formato si queres mantener la máxima eficiencia.
 
 #### Destilación
 
@@ -1114,6 +1171,10 @@ Dependiendo del formato en que se guarde el modelo tenemos diferentes opciones;
 
   [Ollama](https://github.com/ollama/ollama/), [llama.cpp](https://github.com/ggerganov/llama.cpp) y otros lo usan. Los que usan este formato tienden a soportar la ejecución en CPU y/o GPU.
 
+Algunos motores de inferancia tienen la capacidad de cargar en la VRAM una o varias capas, y el resto dejarlas en RAM,
+hacer la ejecución (inferancia) en las mismas y luego intercambiar las capas siguientes que necesita por las que ya no. Es
+un proceso lento, muy lento, y que depende también mucho del driver de tu GPU/NPU/TPU. A veces la pérdida de rendimiento es tal
+que sigue siendo más rápido ejecutarlo en RAM y CPU, otras veces no y sigue siendo convincente hacer este proceso.
   
 ### Convertir con llama.cpp
 
