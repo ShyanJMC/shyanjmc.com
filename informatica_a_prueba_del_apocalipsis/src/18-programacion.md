@@ -1,1 +1,0 @@
-# Lenguajes de programación - Automatización
