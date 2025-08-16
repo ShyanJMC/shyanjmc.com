@@ -17,6 +17,7 @@ git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path}"
 site-url = "/informatica-apocalipsis/"
 cname = "shyanjmc.com"
+additional-css = ["custom.css"]
 
 [output.html.print]
 enable = true    # include support for printable output
