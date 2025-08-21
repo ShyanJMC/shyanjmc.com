@@ -13,7 +13,7 @@
 - [Repositorios de software](./repositorios.md)
 - [Repositorios de código](./repositorios_codigo.md)
 - [Redes](./redes.md)
-- [Sistemas de archivos](./fs.md)
+- [Sistemas y formatos de archivos](./fs.md)
 - [Seguridad](./seguridad.md)
 - [Clústeres](./clusters.md)
 - [Lenguajes de programación - Automatización](./programacion.md)
