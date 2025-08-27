@@ -6,7 +6,7 @@
 
 | Aclaración |
 | :---: |
-| El presente documento utiliza el versionado semántico ([enlace](https://semverdoc.org/)). La versión actual es la v0.55.37, el documento todavía no está terminado y espere futuras actualizaciones. |
+| El presente documento utiliza el versionado semántico ([enlace](https://semverdoc.org/)). La versión actual es la v0.56.37, el documento todavía no está terminado y espere futuras actualizaciones. |
 
 Podemos definir la "informática a prueba del apocalipsis" como aquella que tiene suficiente resiliencia y resistencia como para;
 
